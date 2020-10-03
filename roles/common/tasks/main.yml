@@ -55,7 +55,7 @@
     fstype: fuse
     src: "s3fs#{{ aws_storage_bucket_name }}"
     path: "{{ local_repo_path }}"
-    opts: "_netdev,allow_other,nonempty,iam_role=iamroles3-{{ aws_storage_bucket_name }},uid=0,gid=0,umask=0022"
+    opts: "_netdev,allow_other,nonempty,iam_role=s3_role_{{ aws_storage_bucket_name | replace('-', '_') }},uid=0,gid=0,umask=0022"
     state: mounted
   no_log: yes
 
