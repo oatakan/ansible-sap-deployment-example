@@ -1,7 +1,7 @@
 ---
 
 - name: create a role
-  community.aws.iam_role:
+  iam_role:
     name: s3_role_{{ aws_storage_bucket_name | replace('-', '_') }}
     description: role for s3 bucket {{ aws_storage_bucket_name }}
 
