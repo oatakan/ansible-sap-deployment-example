@@ -29,5 +29,7 @@
 - name: set IAM ROLE
   ec2_instance:
     region: "{{ ec2_region }}"
-    instance_ids: "{{ ec2_instances.instances | map(attribute='instance_id') | list }}"
+    instance_ids:
+      - "{{ item }}"
     instance_role: "s3_role_{{ aws_storage_bucket_name | replace('-', '_') }}"
+  loop: "{{ ec2_instances.instances | map(attribute='instance_id') | list }}"
