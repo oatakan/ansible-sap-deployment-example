@@ -1,5 +1,8 @@
 ---
 
+- debug:
+    msg: "{{ instances.results }}"
+
 - name: create an s3 iam role policy
   iam_policy:
     iam_type: role
