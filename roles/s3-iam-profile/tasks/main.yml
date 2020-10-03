@@ -6,6 +6,7 @@
     iam_name: s3_role_{{ aws_storage_bucket_name | replace('-', '_') }}
     policy_name: "s3_limited_access_{{ aws_storage_bucket_name | replace('-', '_') }}"
     policy_json: "{{ lookup('template','s3-policy.json') }}"
+    state: present
 
 - name: set IAM ROLE
   ec2_instance:
