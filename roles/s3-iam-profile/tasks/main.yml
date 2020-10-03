@@ -1,8 +1,5 @@
 ---
 
-- debug:
-    msg: "{{ instances.results }}"
-
 - name: create an s3 iam role policy
   iam_policy:
     iam_type: role
@@ -11,8 +8,16 @@
     policy_json: "{{ lookup('template','s3-policy.json') }}"
     state: present
 
+- name: get ec2 instance information
+  ec2_instance_info:
+    region: "{{ ec2_region }}"
+    filters:
+      vpc-id: "{{ ec2_vpc_id }}"
+      "tag:app": sap_hana_ha_demo
+  register: ec2_instances
+
 - name: set IAM ROLE
   ec2_instance:
     region: "{{ ec2_region }}"
-    instance_ids: "{{ instances.results | map(attribute='instances[0].instance_id') | list }}"
+    instance_ids: "{{ ec2_instances.instances | map(attribute='instance_id') | list }}"
     instance_role: "s3_role_{{ aws_storage_bucket_name | replace('-', '_') }}"
