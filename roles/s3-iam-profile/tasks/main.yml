@@ -3,7 +3,7 @@
 - name: create an s3 iam role policy
   iam_policy:
     iam_type: role
-    iam_name: s3_role_{{ aws_storage_bucket_name | replace('-', '_' }}
+    iam_name: s3_role_{{ aws_storage_bucket_name | replace('-', '_') }}
     policy_name: "s3_limited_access_{{ aws_storage_bucket_name | replace('-', '_') }}"
     policy_json: "{{ lookup('template','s3-policy.json') }}"
 
