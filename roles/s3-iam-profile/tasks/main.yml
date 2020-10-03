@@ -4,12 +4,12 @@
   iam_policy:
     iam_type: role
     iam_name: s3_role_{{ aws_storage_bucket_name | replace('-', '_' }}
-    policy_name: "s3_limited_access_{{ aws_storage_bucket_name | replace('-', '_' }}"
+    policy_name: "s3_limited_access_{{ aws_storage_bucket_name | replace('-', '_') }}"
     policy_json: "{{ lookup('template','s3-policy.json') }}"
 
 - name: set IAM ROLE
   ec2_instance:
     region: "{{ ec2_region }}"
     instance_ids: "{{ instances.results | map(attribute='instance_id') | list }}"
-    instance_role: "s3_role_{{ aws_storage_bucket_name | replace('-', '_' }}"
+    instance_role: "s3_role_{{ aws_storage_bucket_name | replace('-', '_') }}"
   delegate_to: localhost
