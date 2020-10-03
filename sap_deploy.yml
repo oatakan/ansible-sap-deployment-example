@@ -1,0 +1,57 @@
+---
+
+- name: preconfigure all nodes
+  hosts: "tag_app_sap_hana_ha_demo"
+
+  roles:
+    - common
+    - sap-preconfigure
+    - redhat_sap.sap_rhsm
+    - redhat_sap.sap_hostagent
+
+- name: preconfigure hana and deploy hana
+  hosts: "tag_app_sap_hana_ha_demo:&tag_role_hana"
+  become_method: su
+
+  roles:
+    - sap-hana-preconfigure
+    - redhat_sap.sap_hana_deployment
+    - redhat_sap.sap_hana_hsr
+
+  post_tasks:
+    - name: prevent transaction log to fill up disk
+      shell: >
+        /usr/sap/{{ sap_hana_deployment_hana_sid }}/HDB{{ sap_hana_deployment_hana_instance_number }}/exe/hdbsql
+        -n {{ ansible_hostname }} -i {{ sap_hana_deployment_hana_instance_number }}
+        -u SYSTEM -p {{ sap_hana_deployment_hana_db_system_password }}
+        "ALTER SYSTEM ALTER CONFIGURATION ('global.ini', 'SYSTEM') SET ('persistence', 'log_mode') = 'overwrite' WITH RECONFIGURE";
+      become: yes
+      become_user: "{{ sap_hana_deployment_hana_sid | lower }}adm"
+      become_method: su
+      register: db_overwrite_cmd
+      failed_when: false
+      when: sap_hana_hsr_role == 'primary'
+
+    - debug:
+        msg: "{{ db_overwrite_cmd }}"
+
+     # this a temporary measure before implementing real vip
+    - name: set primary hana server ip
+      add_host:
+        name: hana_primary
+        ip_address: "{{ ansible_ip_addresses[0] | default(ansible_host) | default(ansible_ssh_host) }}"
+
+    - debug:
+        var: hostvars['hana_primary']['ip_address']
+
+- name: preconfigure netweaver and install s4 app
+  hosts: "tag_app_sap_hana_ha_demo:&tag_role_s4app"
+  become_method: su
+  vars:
+    # this a temporary measure before implementing real vip
+    sap_hana_vip: "{{ hostvars['hana_primary']['ip_address'] }}"
+
+  roles:
+    - sap-netweaver-preconfigure
+    - s4-hosts
+    - redhat_sap.sap_s4hana_deployment

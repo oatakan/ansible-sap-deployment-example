@@ -1,0 +1,11 @@
+---
+
+- name: add vip to hosts file for db
+  lineinfile:
+    dest: /etc/hosts
+    regexp: '.*{{ sap_s4hana_deployment_db_host }}$'
+    line: "{{ sap_hana_vip }} {{ sap_s4hana_deployment_db_host }}"
+    state: present
+  when:
+    - sap_s4hana_deployment_db_host is defined
+    - sap_hana_vip is defined

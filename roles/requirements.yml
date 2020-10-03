@@ -1,0 +1,29 @@
+---
+roles:
+  - src: https://github.com/OndrejHome/ansible.ha-cluster-pacemaker.git
+    version: origin/master
+    name: ondrejhome.ha-cluster-pacemaker
+
+  - src: https://github.com/linux-system-roles/sap-preconfigure.git
+    version: v1.0
+  - src: https://github.com/linux-system-roles/sap-hana-preconfigure.git
+    version: v1.0
+  - name: redhat_sap.sap_hana_deployment
+    src: https://github.com/redhat-sap/sap-hana-deployment.git
+  - src: redhat_sap.sap_hana_hsr
+    version: v1.2.0
+  - src: redhat_sap.sap_hana_ha_pacemaker
+    version: v1.0.0
+  - src: https://github.com/linux-system-roles/sap-netweaver-preconfigure.git
+    version: v1.0
+  - src: redhat_sap.sap_hostagent
+    version: v1.2.0
+  - name: redhat_sap.sap_rhsm
+    src: https://github.com/redhat-sap/sap-rhsm.git
+  - src: redhat_sap.sap_s4hana_deployment
+    version: v1.1.0
+  - src: https://github.com/linux-system-roles/storage.git
+  - src: oatakan.rhel_upgrade
+
+  - src: https://github.com/oatakan/ansible-role-ec2
+    version: origin/master

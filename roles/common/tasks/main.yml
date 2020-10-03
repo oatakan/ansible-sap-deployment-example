@@ -1,0 +1,80 @@
+---
+
+- name: check subscription status
+  command: subscription-manager status
+  register: sat_sub_status
+  failed_when: false
+
+- name: output subscription status
+  debug:
+    msg: "{{ sat_sub_status }}"
+
+- name: build hosts file
+  lineinfile:
+    dest: /etc/hosts
+    regexp: '.*{{ item }}$'
+    line: "{{ hostvars[item].ansible_default_ipv4.address }} {{ item }} {{ hostvars[item].ansible_hostname }}"
+    state: present
+  when: hostvars[item].ansible_default_ipv4.address is defined
+  loop: "{{ play_hosts }}"
+
+- name: add vip to hosts file for db
+  lineinfile:
+    dest: /etc/hosts
+    regexp: '.*{{ sap_s4hana_deployment_db_host }}$'
+    line: "{{ sap_hana_ha_pacemaker_vip }} {{ sap_s4hana_deployment_db_host }} {{ sap_s4hana_deployment_db_host }}.{{ foreman.domain_name }}"
+    state: present
+  when:
+    - sap_s4hana_deployment_db_host is defined
+    - sap_hana_ha_pacemaker_vip is defined
+
+- name: Add EPEL repo for RHEL 8
+  yum_repository:
+    name: epel
+    description: EPEL for Enterprise Linux 8
+    baseurl: https://dl.fedoraproject.org/pub/epel/8/Everything/x86_64/
+    enabled: yes
+    gpgcheck: no
+  when: ansible_distribution_major_version|int == 8
+
+- name: ensure prereq packages are present
+  package:
+    name:
+      - compat-sap-c++-9
+      - nfs-utils
+      - nfs4-acl-tools
+      - s3fs-fuse
+
+- name: ensure software repo directory exists
+  file:
+    path: "{{ local_repo_path }}"
+    state: directory
+
+- name: Mount bucket to mount point
+  mount:
+    fstype: fuse
+    src: "s3fs#{{ aws_storage_bucket_name }}"
+    path: "{{ local_repo_path }}"
+    opts: "_netdev,allow_other,nonempty,iam_role=iamroles3-{{ aws_storage_bucket_name }},uid=0,gid=0,umask=0022"
+    state: mounted
+  no_log: yes
+
+- name: ensure installation directories exists
+  file:
+    path: "{{ sap_install_sapcar_path }}"
+    state: directory
+  when: sap_install_sapcar_path is defined
+
+- name: ensure SAPCAR is copied to target directories
+  copy:
+    src: "{{ local_repo_path }}/SAPCAR/{{ sap_install_sapcar_file_name }}"
+    dest: "{{ sap_install_sapcar_path }}/{{ sap_install_sapcar_file_name }}"
+    remote_src: yes
+    mode: u+rwx,g+rx,o+rx
+  when: sap_install_sapcar_path is defined
+
+#- name: set grub to default to the old kernel for kernel patching scenario
+#  shell: /usr/sbin/grubby --set-default-index=1
+#
+#- name: Reboot the machine
+#  reboot:

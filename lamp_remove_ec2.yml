@@ -1,0 +1,17 @@
+- hosts: localhost
+  become: no
+  tasks:
+    - name: get ec2 instance information
+      ec2_instance_info:
+        region: "{{ ec2_region }}"
+        filters:
+          vpc-id: "{{ ec2_vpc_id }}"
+          "tag:app": sap_hana_ha_demo
+      register: ec2_instances
+
+    - name: terminate instances
+      ec2:
+        region: "{{ ec2_region }}"
+        state: "absent"
+        instance_ids: "{{ ec2_instances.instances | map(attribute='instance_id') | list }}"
+      when: ec2_instances.instances | map(attribute='instance_id') | list | length > 0

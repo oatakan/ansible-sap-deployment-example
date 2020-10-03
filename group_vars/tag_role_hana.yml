@@ -1,0 +1,64 @@
+---
+sap_hana_deployment_bundle_path: "/software/HANA_installation"
+sap_hana_deployment_bundle_sar_file_name: "IMDB_SERVER20_051_0-80002031.SAR"
+sap_hana_deployment_sapcar_path: "/install/SAPCAR"
+sap_hana_deployment_sapcar_file_name: "SAPCAR.EXE"
+sap_hana_deployment_root_password: "{{ sap_password }}"
+sap_hana_deployment_sapadm_password: "{{ sap_password }}"
+sap_hana_deployment_hana_sid: RHE
+sap_hana_deployment_hana_instance_number: "00"
+sap_hana_deployment_hana_env_type: development
+sap_hana_deployment_hana_mem_restrict: "n"
+sap_hana_deployment_common_master_password: "{{ sap_password }}"
+sap_hana_deployment_sidadm_password: "{{ sap_password }}"
+sap_hana_deployment_hana_db_system_password: "{{ sap_password }}"
+sap_hana_deployment_ase_user_password: "{{ sap_password }}"
+sap_hana_deployment_apply_license: false
+
+sap_hana_hsr_hana_sid: RHE
+
+sap_hana_hsr_hana_instance_number: "00"
+sap_hana_hsr_hana_db_system_password: "{{ sap_password }}"
+sap_hana_hsr_hana_primary_hostname: "{{ hostvars[ansible_play_hosts[0]].ansible_hostname }}"
+
+#sap_hana_ha_pacemaker_hana_sid: RHE
+#sap_hana_ha_pacemaker_hana_instance_number: "00"
+#
+#sap_hana_ha_pacemaker_hacluster_password: "{{ sap_password }}"
+#sap_hana_ha_pacemaker_node1_fqdn: "{{ hostvars[ansible_play_hosts[0]].ansible_fqdn }}"
+#sap_hana_ha_pacemaker_node2_fqdn: "{{ hostvars[ansible_play_hosts[1]].ansible_fqdn }}"
+#sap_hana_ha_pacemaker_node1_ip: "{{ hostvars[ansible_play_hosts[0]].ansible_ssh_host }}"
+#sap_hana_ha_pacemaker_node2_ip: "{{ hostvars[ansible_play_hosts[1]].ansible_ssh_host }}"
+
+sap_hana_hsr_roles:
+  - primary
+  - secondary
+
+sap_hana_hsr_aliases:
+  - hdb1
+  - hdb2
+
+sap_hana_hsr_role: "{{ sap_hana_hsr_roles[ansible_play_hosts.index(inventory_hostname)] }}"
+sap_hana_hsr_alias: "{{ sap_hana_hsr_aliases[ansible_play_hosts.index(inventory_hostname)] }}"
+
+storage_pools:
+  - name: sap
+    disks:
+      - sdb
+    volumes:
+      - name: data
+        size: "36 GiB"
+        mount_point: "/hana/data"
+        state: present
+      - name: log
+        size: "32 GiB"
+        mount_point: "/hana/log"
+        state: present
+      - name: shared
+        size: "22 GiB"
+        mount_point: "/hana/shared"
+        state: present
+      - name: sap
+        size: "4 GiB"
+        mount_point: "/usr/sap"
+        state: present

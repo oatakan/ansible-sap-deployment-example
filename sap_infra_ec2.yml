@@ -1,0 +1,41 @@
+- hosts: localhost
+  become: no
+  gather_facts: no
+  vars_files:
+    - node-config/nodes-ec2.yml
+  roles:
+    - ec2-find-amis
+    - ansible-role-ec2
+    - s3-iam-profile
+
+  post_tasks:
+    - name: add hosts to hana group
+      add_host:
+        name: "{{ item.instances[0].public_ip_address }}"
+        ansible_host: "{{ item.instances[0].public_ip_address }}"
+        ansible_user: ec2-user
+        groups: tag_role_hana,tag_app_sap_hana_ha_demo
+      loop: "{{ instances.results }}"
+      when:
+        - ('sap_hana_ha_demo' in item.instances[0].tags.app)
+        - ('hana' in item.instances[0].tags.role)
+      changed_when: no
+
+    - name: add hosts to s4app group
+      add_host:
+        name: "{{ item.instances[0].public_ip_address }}"
+        ansible_host: "{{ item.instances[0].public_ip_address }}"
+        ansible_user: ec2-user
+        groups: tag_role_s4app,tag_app_sap_hana_ha_demo
+      loop: "{{ instances.results }}"
+      when:
+        - ('sap_hana_ha_demo' in item.instances[0].tags.app)
+        - ('s4app' in item.instances[0].tags.role)
+      changed_when: no
+
+    - name: wait for connection
+      wait_for_connection:
+      delegate_to: "{{ item.instances[0].public_ip_address }}"
+      loop: "{{ instances.results }}"
+      when: ('sap_hana_ha_demo' in item.instances[0].tags.app)
+      changed_when: no

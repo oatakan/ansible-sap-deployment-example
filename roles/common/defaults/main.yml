@@ -1,0 +1,5 @@
+---
+
+local_repo_path: /software
+
+aws_storage_bucket_name: demo-bucket

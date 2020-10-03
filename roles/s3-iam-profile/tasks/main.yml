@@ -1,0 +1,14 @@
+---
+
+- name: create an s3 iam role
+  iam_role:
+    name: iamroles3-{{ aws_storage_bucket_name }}
+    assume_role_policy_document: "{{ lookup('template','s3-policy.json') }}"
+    description: iam role for s3 bucket - {{ aws_storage_bucket_name }}
+
+- name: set IAM ROLE
+  ec2_instance:
+    region: "{{ ec2_region }}"
+    instance_ids: "{{ instances.results | map(attribute='instance_id') | list }}"
+    instance_role: "iamroles3-{{ aws_storage_bucket_name }}"
+  delegate_to: localhost

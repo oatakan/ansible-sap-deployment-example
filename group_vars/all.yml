@@ -1,0 +1,20 @@
+---
+sap_hostagent_installation_type: "rpm"
+sap_hostagent_rpm_remote_path: "/software/SAPHOSTAGENT"
+sap_hostagent_rpm_file_name: "saphostagentrpm_48-20009394.rpm"
+sap_rhsm_pools_ids:
+  - "mypoolidinfo"
+
+#sap_hana_ha_pacemaker_vip: "172.16.4.250"
+sap_hana_vip: "172.16.4.250"
+
+sap_password: "mysecretPassw0rd!"
+
+sap_install_sapcar_path: "/install/SAPCAR"
+sap_install_sapcar_file_name: "SAPCAR.EXE"
+
+#software_repo_nfs_server: localhost
+#software_repo_path: /var/lib/exports/software
+local_repo_path: /software
+
+aws_storage_bucket_name: rhsap-demo
