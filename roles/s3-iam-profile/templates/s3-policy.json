@@ -6,12 +6,14 @@
    "Action": [
    "s3:GetBucketLocation",
    "s3:ListAllMyBuckets"
-  ],
+   ],
+   "Sid": "",
    "Resource": "arn:aws:s3:::*"
   },
   {
    "Effect": "Allow",
    "Action": ["s3:ListBucket"],
+   "Sid": "",
    "Resource": ["arn:aws:s3:::{{ aws_storage_bucket_name }}"]
   },
   {
@@ -19,7 +21,8 @@
    "Action": [
     "s3:GetObject"
    ],
-  "Resource": ["arn:aws:s3:::{{ aws_storage_bucket_name }}/*"]
+   "Sid": "",
+   "Resource": ["arn:aws:s3:::{{ aws_storage_bucket_name }}/*"]
   }
  ]
 }
