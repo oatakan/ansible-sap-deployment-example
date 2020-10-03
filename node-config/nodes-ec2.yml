@@ -16,7 +16,7 @@ nodes:
 
   - name: hana2
     role: hana
-    app_name: lamp_multi_node
+    app_name: sap_hana_ha_demo
     pod_name: "{{ ec2_name_prefix }}"
     instance_type: m4.4xlarge
     image: "{{ ec2_ami_ids['rhel8'] | default('ami-02eac2c0129f6376b') }}" #rhel8
