@@ -1,0 +1,20 @@
+- hosts: 3.231.165.139
+  become: yes
+
+  tasks:
+    - shell: |
+        source /usr/sap/RHE/home/.sapenv.sh && \
+        /usr/sap/RHE/HDB00/exe/hdbsql \
+        -i 00 -u SYSTEM -p mysecretPassw0rd! -d SYSTEMDB -m <<EOF
+        BACKUP DATA USING FILE ('system_bck');
+        EOF
+      args:
+        executable: /bin/bash
+      register: whoami
+      become: yes
+      become_user: rheadm
+#      become_method: sudo
+#      become_exe: 'sudo -p "Password: " su -'
+
+    - debug:
+        msg: "{{ whoami }}"
