@@ -8,7 +8,7 @@
   lineinfile:
     dest: /etc/hosts
     regexp: '.*{{ item }}$'
-    line: "{{ hostvars[item].ansible_default_ipv4.address }} {{ ec2_tag_Name.split('-')[-1] }}.{{ domain_name }} {{ ec2_tag_Name.split('-')[-1] }}"
+    line: "{{ hostvars[item].ansible_default_ipv4.address }} {{ hostvars[item].ec2_tag_Name.split('-')[-1] }}.{{ domain_name }} {{ hostvars[item].ec2_tag_Name.split('-')[-1] }}"
     state: present
   when: hostvars[item].ansible_default_ipv4.address is defined
   loop: "{{ play_hosts }}"
