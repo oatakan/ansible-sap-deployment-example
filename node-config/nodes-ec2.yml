@@ -6,6 +6,11 @@ nodes:
     pod_name: "{{ ec2_name_prefix }}"
     instance_type: m4.4xlarge
     image: "{{ ec2_ami_ids['rhel8'] | default('ami-02eac2c0129f6376b') }}" #rhel8
+    volumes:
+      - device_name: /dev/sda1
+        ebs:
+          volume_size: 512
+          delete_on_termination: true
 
   - name: hana1
     role: hana
@@ -13,6 +18,11 @@ nodes:
     pod_name: "{{ ec2_name_prefix }}"
     instance_type: m4.4xlarge
     image: "{{ ec2_ami_ids['rhel8'] | default('ami-02eac2c0129f6376b') }}" #rhel8
+    volumes:
+      - device_name: /dev/sda1
+        ebs:
+          volume_size: 512
+          delete_on_termination: true
 
   - name: hana2
     role: hana
@@ -20,3 +30,8 @@ nodes:
     pod_name: "{{ ec2_name_prefix }}"
     instance_type: m4.4xlarge
     image: "{{ ec2_ami_ids['rhel8'] | default('ami-02eac2c0129f6376b') }}" #rhel8
+    volumes:
+      - device_name: /dev/sda1
+        ebs:
+          volume_size: 512
+          delete_on_termination: true

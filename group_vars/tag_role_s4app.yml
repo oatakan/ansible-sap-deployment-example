@@ -30,16 +30,20 @@ sap_s4hana_deployment_sap_sidadm_password: "{{ sap_password }}"
 storage_pools:
   - name: sap
     disks:
-      - sdb
+      - sda
     volumes:
       - name: sap
-        size: "30 GiB"
+        size: "128 GiB"
         mount_point: "/usr/sap"
         state: present
       - name: sapmnt
-        size: "20 GiB"
+        size: "128 GiB"
         mount_point: "/usr/sapmnt"
         state: present
       - name: swap
-        size: "20 GiB"
+        size: "40 GiB"
+        state: present
+      - name: install
+        size: "40 GiB"
+        mount_point: "/install"
         state: present

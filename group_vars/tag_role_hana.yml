@@ -44,21 +44,25 @@ sap_hana_hsr_alias: "{{ sap_hana_hsr_aliases[ansible_play_hosts.index(inventory_
 storage_pools:
   - name: sap
     disks:
-      - sdb
+      - sda
     volumes:
       - name: data
-        size: "36 GiB"
+        size: "128 GiB"
         mount_point: "/hana/data"
         state: present
       - name: log
-        size: "32 GiB"
+        size: "128 GiB"
         mount_point: "/hana/log"
         state: present
       - name: shared
-        size: "22 GiB"
+        size: "128 GiB"
         mount_point: "/hana/shared"
         state: present
       - name: sap
-        size: "4 GiB"
+        size: "40 GiB"
         mount_point: "/usr/sap"
+        state: present
+      - name: install
+        size: "40 GiB"
+        mount_point: "/install"
         state: present
