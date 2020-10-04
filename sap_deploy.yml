@@ -14,8 +14,8 @@
 - name: preconfigure hana and deploy hana
   hosts: "tag_app_sap_hana_ha_demo:&tag_role_hana"
   become: yes
-#  become_method: su
-  become_exe: "sudo su -"
+  become_method: su
+  become_exe: 'sudo -p "Password: " su -'
 
   roles:
     - sap-hana-preconfigure
@@ -31,8 +31,8 @@
         "ALTER SYSTEM ALTER CONFIGURATION ('global.ini', 'SYSTEM') SET ('persistence', 'log_mode') = 'overwrite' WITH RECONFIGURE";
       become: yes
       become_user: "{{ sap_hana_deployment_hana_sid | lower }}adm"
-#      become_method: su
-      become_exe: "sudo su -"
+      become_method: su
+      become_exe: 'sudo -p "Password: " su -'
       register: db_overwrite_cmd
       failed_when: false
       when: sap_hana_hsr_role == 'primary'
@@ -51,8 +51,8 @@
 
 - name: preconfigure netweaver and install s4 app
   hosts: "tag_app_sap_hana_ha_demo:&tag_role_s4app"
-#  become_method: su
-  become_exe: "sudo su -"
+  become_method: su
+  become_exe: 'sudo -p "Password: " su -'
   become: yes
   vars:
     # this a temporary measure before implementing real vip
