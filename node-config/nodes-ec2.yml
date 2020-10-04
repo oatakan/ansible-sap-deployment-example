@@ -11,7 +11,7 @@ nodes:
         ebs:
           volume_size: 100
           delete_on_termination: true
-      - device_name: /dev/sdb1
+      - device_name: /dev/xvdb
         ebs:
           volume_size: 512
           delete_on_termination: true
@@ -27,7 +27,7 @@ nodes:
         ebs:
           volume_size: 100
           delete_on_termination: true
-      - device_name: /dev/sdb1
+      - device_name: /dev/xvdb
         ebs:
           volume_size: 512
           delete_on_termination: true
@@ -43,7 +43,7 @@ nodes:
         ebs:
           volume_size: 100
           delete_on_termination: true
-      - device_name: /dev/sdb1
+      - device_name: /dev/xvdb
         ebs:
           volume_size: 512
           delete_on_termination: true
