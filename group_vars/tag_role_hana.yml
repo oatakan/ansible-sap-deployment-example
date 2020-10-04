@@ -44,7 +44,7 @@ sap_hana_hsr_alias: "{{ sap_hana_hsr_aliases[ansible_play_hosts.index(inventory_
 storage_pools:
   - name: sap
     disks:
-      - sda
+      - xvdb
     volumes:
       - name: data
         size: "128 GiB"

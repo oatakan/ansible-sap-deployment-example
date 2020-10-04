@@ -30,7 +30,7 @@ sap_s4hana_deployment_sap_sidadm_password: "{{ sap_password }}"
 storage_pools:
   - name: sap
     disks:
-      - sda
+      - xvdb
     volumes:
       - name: sap
         size: "128 GiB"
