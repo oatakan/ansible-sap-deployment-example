@@ -39,3 +39,14 @@
       loop: "{{ instances.results }}"
       when: ('sap_hana_ha_demo' in item.instances[0].tags.app)
       changed_when: no
+
+    - name: enable root login
+      replace:
+        path: /root/.ssh/authorized_keys
+        regexp: '(.*)(ssh-rsa .*)$'
+        replace: '\2'
+      become: yes
+      delegate_to: "{{ item.instances[0].public_ip_address }}"
+      loop: "{{ instances.results }}"
+      when: ('sap_hana_ha_demo' in item.instances[0].tags.app)
+      changed_when: no

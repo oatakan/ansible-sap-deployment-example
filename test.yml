@@ -1,21 +1,23 @@
-- hosts: "tag_app_sap_hana_ha_demo:&tag_role_hana"
+- hosts: all
   become: yes
 
   tasks:
-    - shell: |
-        source /usr/sap/RHE/home/.sapenv.sh && \
-        /usr/sap/RHE/HDB00/exe/hdbsql \
-        -i 00 -u SYSTEM -p {{ sap_password }} -d SYSTEMDB -m <<EOF
-        BACKUP DATA USING FILE ('system_bck');
-        EOF
+    - shell: whoami
+#    - shell: |
+#        source /usr/sap/RHE/home/.sapenv.sh && \
+#        /usr/sap/RHE/HDB00/exe/hdbsql \
+#        -i 00 -u SYSTEM -p {{ sap_password }} -d SYSTEMDB -m <<EOF
+#        BACKUP DATA USING FILE ('system_bck');
+#        EOF
       args:
         executable: /bin/bash
       register: backup
       become: yes
       become_user: rheadm
-      changed_when: "'0 rows affected' in systembackup.stdout"
-      when:
-        - sap_hana_hsr_role == 'primary'
+      become_method: su
+      become_exe: 'sudo su -'
+      changed_when: "'0 rows affected' in backup.stdout"
+
 
     - debug:
         msg: "{{ backup }}"
