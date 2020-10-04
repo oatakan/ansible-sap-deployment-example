@@ -4,7 +4,7 @@
   lineinfile:
     dest: /etc/hosts
     regexp: '.*{{ sap_s4hana_deployment_db_host }}$'
-    line: "{{ sap_hana_vip }} {{ sap_s4hana_deployment_db_host }}"
+    line: "{{ sap_hana_vip }} {{ sap_s4hana_deployment_db_host }} {{ sap_s4hana_deployment_db_host }}.{{ ansible_domain }}"
     state: present
   when:
     - sap_s4hana_deployment_db_host is defined
