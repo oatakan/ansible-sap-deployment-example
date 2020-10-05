@@ -51,11 +51,11 @@ storage_pools:
         mount_point: "/hana/data"
         state: present
       - name: log
-        size: "64 GiB"
+        size: "80 GiB"
         mount_point: "/hana/log"
         state: present
       - name: shared
-        size: "64 GiB"
+        size: "80 GiB"
         mount_point: "/hana/shared"
         state: present
       - name: sap
