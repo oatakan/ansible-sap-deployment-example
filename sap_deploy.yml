@@ -14,12 +14,23 @@
   hosts: "tag_app_sap_hana_ha_demo:&tag_role_hana"
   become_method: su
 
-  roles:
-    - sap-hana-preconfigure
-    - redhat_sap.sap_hana_deployment
-    - redhat_sap.sap_hana_hsr
+  tasks:
+    - name: check existing hana installation
+      stat:
+        path: "/usr/sap/{{ sap_hana_deployment_hana_sid }}/HDB{{ sap_hana_deployment_hana_instance_number }}/exe/hdbsql"
+        get_checksum: no
+      register: hana_installation_check
 
-  post_tasks:
+    - include_role:
+        name: "{{ role_name }}"
+      when: (not hana_installation_check.stat.exists) | default(True)
+      loop_control:
+        loop_var: role_name
+      loop:
+        - sap-hana-preconfigure
+        - redhat_sap.sap_hana_deployment
+        - redhat_sap.sap_hana_hsr
+
     - block:
         - name: prevent transaction log to fill up disk
           shell: >
