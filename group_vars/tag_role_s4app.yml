@@ -33,17 +33,17 @@ storage_pools:
       - nvme1n1
     volumes:
       - name: sap
-        size: "128 GiB"
+        size: "64 GiB"
         mount_point: "/usr/sap"
         state: present
       - name: sapmnt
-        size: "128 GiB"
+        size: "64 GiB"
         mount_point: "/usr/sapmnt"
         state: present
       - name: swap
-        size: "40 GiB"
+        size: "20 GiB"
         state: present
       - name: install
-        size: "40 GiB"
+        size: "10 GiB"
         mount_point: "/install"
         state: present
