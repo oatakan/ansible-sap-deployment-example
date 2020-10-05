@@ -13,7 +13,7 @@ nodes:
           delete_on_termination: true
       - device_name: /dev/xvdb
         ebs:
-          volume_size: 300
+          volume_size: 256
           delete_on_termination: true
 
   - name: hana1
@@ -29,7 +29,7 @@ nodes:
           delete_on_termination: true
       - device_name: /dev/xvdb
         ebs:
-          volume_size: 300
+          volume_size: 256
           delete_on_termination: true
 
   - name: hana2
@@ -45,5 +45,5 @@ nodes:
           delete_on_termination: true
       - device_name: /dev/xvdb
         ebs:
-          volume_size: 300
+          volume_size: 256
           delete_on_termination: true
