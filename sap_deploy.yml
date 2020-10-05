@@ -48,7 +48,7 @@
 
 - name: preconfigure netweaver and install s4 app
   hosts: "tag_app_sap_hana_ha_demo:&tag_role_s4app"
-  become_method: su
+#  become_method: su
   vars:
     # this a temporary measure before implementing real vip
     sap_hana_vip: "{{ hostvars['hana_primary']['ip_address'] }}"
