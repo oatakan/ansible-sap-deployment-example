@@ -67,4 +67,4 @@
   roles:
     - sap-netweaver-preconfigure
     - s4-hosts
-    - redhat_sap.sap_s4hana_deployment
+    - sap_s4hana_deployment
