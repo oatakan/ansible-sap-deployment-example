@@ -38,12 +38,22 @@
     ./sapinst SAPINST_INPUT_PARAMETERS_URL={{ tmpdir.path }}/inifile.params \
     SAPINST_EXECUTE_PRODUCT_ID={{ sap_s4hana_deployment_product_id }} \
     SAPINST_SKIP_DIALOGS=true SAPINST_START_GUISERVER=false
-  register: installs4hana
   args:
     chdir: "{{ sapinst_path }}"
+  async: 7200
+  poll: 0
+  register: installs4hana
   changed_when:
     - "'SAPinst build information' in installs4hana.stdout"
     - "'An empty directory is required for a new SAP system installation' not in installs4hana.stdout"
   failed_when:
     - installs4hana.rc > 0
     - "'An empty directory is required for a new SAP system installation' not in installs4hana.stdout"
+
+- name: Wait for SAP S4HANA installation to complete
+  async_status:
+    jid: "{{ installs4hana.ansible_job_id }}"
+  register: check_install
+  until: check_install.finished
+  retries: 300
+  delay: 10
