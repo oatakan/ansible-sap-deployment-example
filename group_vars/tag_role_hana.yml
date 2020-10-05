@@ -47,22 +47,22 @@ storage_pools:
       - nvme1n1
     volumes:
       - name: data
-        size: "64 GiB"
+        size: "96 GiB"
         mount_point: "/hana/data"
         state: present
       - name: log
-        size: "64 GiB"
+        size: "96 GiB"
         mount_point: "/hana/log"
         state: present
       - name: shared
-        size: "64 GiB"
+        size: "96 GiB"
         mount_point: "/hana/shared"
         state: present
       - name: sap
-        size: "10 GiB"
+        size: "5 GiB"
         mount_point: "/usr/sap"
         state: present
       - name: install
-        size: "10 GiB"
+        size: "5 GiB"
         mount_point: "/install"
         state: present
