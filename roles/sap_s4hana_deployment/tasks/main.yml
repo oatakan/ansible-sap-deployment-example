@@ -43,12 +43,6 @@
   async: 7200
   poll: 0
   register: installs4hana
-  changed_when:
-    - "'SAPinst build information' in installs4hana.stdout"
-    - "'An empty directory is required for a new SAP system installation' not in installs4hana.stdout"
-  failed_when:
-    - installs4hana.rc > 0
-    - "'An empty directory is required for a new SAP system installation' not in installs4hana.stdout"
 
 - name: Wait for SAP S4HANA installation to complete
   async_status:
@@ -57,3 +51,9 @@
   until: check_install.finished
   retries: 300
   delay: 10
+  changed_when:
+    - "'SAPinst build information' in (check_install.stdout | default(''))"
+    - "'An empty directory is required for a new SAP system installation' not in (check_install.stdout | default(''))"
+  failed_when:
+    - (check_install.rc | default(0)) > 0
+    - "'An empty directory is required for a new SAP system installation' not in (check_install.stdout | default(''))"
