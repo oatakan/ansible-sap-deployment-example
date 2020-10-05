@@ -1,6 +1,5 @@
 ---
-#sap_s4hana_deployment_product_id: "NW_ABAP_OneHost:S4HANA1909.CORE.HDB.ABAP"
-sap_s4hana_deployment_product_id: "S4HANA1909.CORE.HDB.ABAP"
+sap_s4hana_deployment_product_id: "NW_ABAP_OneHost:S4HANA1909.CORE.HDB.ABAP"
 sap_s4hana_deployment_sapcar_path: "/install/SAPCAR"
 sap_s4hana_deployment_sapcar_file_name: "SAPCAR.EXE"
 sap_s4hana_deployment_swpm_path: "/software/S4HANA_installation"
