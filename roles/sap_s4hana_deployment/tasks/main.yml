@@ -49,7 +49,7 @@
     jid: "{{ installs4hana.ansible_job_id }}"
   register: check_install
   until: check_install.finished
-  retries: 300
+  retries: 600
   delay: 10
   changed_when:
     - "'SAPinst build information' in (check_install.stdout | default(''))"
