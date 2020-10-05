@@ -41,8 +41,9 @@
   register: installs4hana
   args:
     chdir: "{{ sapinst_path }}"
-  when: true
-  changed_when: "'SAPinst build information' in installs4hana.stdout"
+  changed_when:
+    - "'SAPinst build information' in installs4hana.stdout"
+    - "'An empty directory is required for a new SAP system installation' not in installs4hana.stdout"
   failed_when:
     - installs4hana.rc > 0
     - "'An empty directory is required for a new SAP system installation' not in installs4hana.stdout"
