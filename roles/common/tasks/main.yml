@@ -70,8 +70,8 @@
     mode: u+rwx,g+rx,o+rx
   when: sap_install_sapcar_path is defined
 
-- name: set grub to default to the old kernel for kernel patching scenario
-  shell: /usr/sbin/grubby --set-default-index=1
-
-- name: Reboot the machine
-  reboot:
+#- name: set grub to default to the old kernel for kernel patching scenario
+#  shell: /usr/sbin/grubby --set-default-index=1
+#
+#- name: Reboot the machine
+#  reboot:
