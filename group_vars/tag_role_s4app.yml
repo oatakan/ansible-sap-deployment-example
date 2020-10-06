@@ -41,9 +41,9 @@ storage_pools:
         mount_point: "/usr/sapmnt"
         state: present
       - name: swap
-        size: "20 GiB"
+        size: "40 GiB"
         state: present
       - name: install
-        size: "10 GiB"
+        size: "40 GiB"
         mount_point: "/install"
         state: present
