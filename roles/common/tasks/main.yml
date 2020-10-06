@@ -71,11 +71,15 @@
   when: sap_install_sapcar_path is defined
 
 # this seems to be only needed on 8.1 AMI on AWS
-- name: install @server group
-  yum:
-    name: '@server'
-    skip_broken: yes
-    state: present
+- block:
+    - name: install @server group and skip broken
+      command: yum install @server --skip-broken
+      failed_when: false
+
+    - name: install @server group
+      yum:
+        name: '@server'
+        state: present
   when: ('4.18.0-147.el8.x86_64' in ansible_kernel)
 
 #- name: set grub to default to the old kernel for kernel patching scenario
