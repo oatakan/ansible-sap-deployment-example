@@ -1,0 +1,28 @@
+---
+
+- name: preconfigure hana and deploy hana
+  hosts: "tag_app_sap_hana_ha_demo:&tag_role_hana"
+  become_method: su
+
+  tasks:
+     # this a temporary measure before implementing real vip
+    - name: set primary hana server ip
+      add_host:
+        name: hana_primary
+        ip_address: "{{ ansible_ip_addresses[0] | default(ec2_private_ip_address) | default(ansible_host) | default(ansible_ssh_host) }}"
+      when: sap_hana_hsr_role == 'primary'
+
+    - debug:
+        var: hostvars['hana_primary']['ip_address']
+      when: sap_hana_hsr_role == 'primary'
+
+- name: preconfigure netweaver and install s4 app
+  hosts: "tag_app_sap_hana_ha_demo:&tag_role_s4app"
+#  become_method: su
+  vars:
+    # this a temporary measure before implementing real vip
+    sap_hana_vip: "{{ hostvars['hana_primary']['ip_address'] }}"
+
+  roles:
+    - s4-hosts
+    - sap_s4hana_deployment

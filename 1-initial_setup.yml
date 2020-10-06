@@ -1,0 +1,8 @@
+---
+
+- name: preconfigure all nodes
+  hosts: "tag_app_sap_hana_ha_demo"
+
+  roles:
+    - storage
+    - common

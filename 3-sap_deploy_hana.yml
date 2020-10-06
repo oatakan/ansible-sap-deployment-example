@@ -1,0 +1,35 @@
+---
+
+- name: preconfigure hana and deploy hana
+  hosts: "tag_app_sap_hana_ha_demo:&tag_role_hana"
+  become_method: su
+
+  tasks:
+    - name: check existing hana installation
+      stat:
+        path: "/usr/sap/{{ sap_hana_deployment_hana_sid }}/HDB{{ sap_hana_deployment_hana_instance_number }}/exe/hdbsql"
+        get_checksum: no
+      register: hana_installation_check
+
+    - include_role:
+        name: "{{ role_name }}"
+      when: (not hana_installation_check.stat.exists) | default(True)
+      loop_control:
+        loop_var: role_name
+      loop:
+        - sap-hana-preconfigure
+        - redhat_sap.sap_hana_deployment
+        - redhat_sap.sap_hana_hsr
+
+    - name: prevent transaction log to fill up disk
+      shell: >
+        /usr/sap/{{ sap_hana_deployment_hana_sid }}/HDB{{ sap_hana_deployment_hana_instance_number }}/exe/hdbsql
+        -n {{ ansible_hostname }} -i {{ sap_hana_deployment_hana_instance_number }}
+        -u SYSTEM -p {{ sap_hana_deployment_hana_db_system_password }}
+        "ALTER SYSTEM ALTER CONFIGURATION ('global.ini', 'SYSTEM') SET ('persistence', 'log_mode') = 'overwrite' WITH RECONFIGURE";
+      become: yes
+      become_user: "{{ sap_hana_deployment_hana_sid | lower }}adm"
+      become_method: su
+      register: db_overwrite_cmd
+      failed_when: false
+      when: sap_hana_hsr_role == 'primary'

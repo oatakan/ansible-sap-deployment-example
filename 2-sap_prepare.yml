@@ -1,0 +1,22 @@
+---
+
+- name: preconfigure all nodes
+  hosts: "tag_app_sap_hana_ha_demo"
+
+  roles:
+    - sap-preconfigure
+    - redhat_sap.sap_rhsm
+    - redhat_sap.sap_hostagent
+
+- name: preconfigure hana and deploy hana
+  hosts: "tag_app_sap_hana_ha_demo:&tag_role_hana"
+  become_method: su
+
+  roles:
+    - sap-hana-preconfigure
+
+- name: preconfigure netweaver and install s4 app
+  hosts: "tag_app_sap_hana_ha_demo:&tag_role_s4app"
+
+  roles:
+    - sap-netweaver-preconfigure
