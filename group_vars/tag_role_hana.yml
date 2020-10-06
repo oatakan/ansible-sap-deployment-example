@@ -59,10 +59,10 @@ storage_pools:
         mount_point: "/hana/shared"
         state: present
       - name: sap
-        size: "5 GiB"
+        size: "10 GiB"
         mount_point: "/usr/sap"
         state: present
       - name: install
-        size: "5 GiB"
+        size: "10 GiB"
         mount_point: "/install"
         state: present
