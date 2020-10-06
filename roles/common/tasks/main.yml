@@ -73,7 +73,7 @@
 # this seems to be only needed on 8.1 AMI on AWS
 - block:
     - name: install @server group and skip broken
-      command: yum install @server --skip-broken
+      command: yum install @server --skip-broken -y
       failed_when: false
 
     - name: install @server group
