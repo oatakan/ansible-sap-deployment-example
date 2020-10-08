@@ -1,0 +1,33 @@
+---
+
+- name: add service user
+  hosts: "tag_app_sap_hana_ha_demo"
+
+  tasks:
+    - name: add user
+      user:
+        name: "{{ service_user_name }}"
+        shell: /bin/bash
+        group: sudo
+        password: "{{ service_user_password | password_hash('sha512') }}"
+
+    - name: create sudoers config
+      copy:
+        dest: /etc/sudoers.d/{{ service_user_name }}
+        content: |
+          # User rules for {{ service_user_name }}
+          {{ service_user_name }} ALL=(ALL) NOPASSWD:ALL
+
+    - name: enable Password authentication for SSH
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regex: ^(# *)?PasswordAuthentication
+        line: PasswordAuthentication yes
+      notify: restart sshd
+
+
+  handlers:
+    - name: restart sshd
+      service:
+        name: sshd
+        state: restarted
