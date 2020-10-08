@@ -22,6 +22,7 @@
         path: /etc/ssh/sshd_config
         regex: ^(# *)?PasswordAuthentication
         line: PasswordAuthentication yes
+        backrefs: yes
       notify: restart sshd
 
 
