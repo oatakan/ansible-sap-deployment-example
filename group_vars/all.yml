@@ -5,7 +5,7 @@ sap_hostagent_rpm_file_name: "saphostagentrpm_48-20009394.rpm"
 sap_rhsm_pools_ids:
   - "mypoolidinfo"
 
-#sap_hana_ha_pacemaker_vip: "172.16.4.250"
+sap_hana_ha_pacemaker_vip: "172.16.4.250"
 sap_hana_vip: "172.16.4.250"
 
 sap_password: "mysecretPassw0rd#"

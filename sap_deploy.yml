@@ -57,6 +57,16 @@
             var: hostvars['hana_primary']['ip_address']
       when: sap_hana_hsr_role == 'primary'
 
+- name: hana pacemaker
+  hosts: "tag_app_sap_hana_ha_demo:&tag_role_hana"
+  become_method: su
+  vars:
+    # this a temporary measure before implementing real vip
+    sap_hana_ha_pacemaker_vip: "{{ hostvars['hana_primary']['ip_address'] }}"
+
+  roles:
+    - redhat_sap.sap_hana_ha_pacemaker
+
 - name: preconfigure netweaver and install s4 app
   hosts: "tag_app_sap_hana_ha_demo:&tag_role_s4app"
 #  become_method: su
