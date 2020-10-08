@@ -63,7 +63,12 @@
   vars:
     # this a temporary measure before implementing real vip
     sap_hana_ha_pacemaker_vip: "{{ hostvars['hana_primary']['ip_address'] }}"
-    ansible_ssh_host: "{{ ansible_host }}"
+
+  pre_tasks:
+    - name: set ansible host
+      set_fact:
+        ansible_ssh_host: "{{ ansible_host }}"
+      when: ansible_ssh_host is undefined
 
   roles:
     - redhat_sap.sap_hana_ha_pacemaker
