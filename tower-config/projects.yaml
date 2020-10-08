@@ -1,0 +1,89 @@
+projects:
+- allow_override: false
+  credential: null
+  custom_virtualenv: null
+  description: ''
+  local_path: _8__ansible_sap_deployment_example
+  name: ansible-sap-deployment-example
+  natural_key:
+    name: ansible-sap-deployment-example
+    organization:
+      name: Default
+      type: organization
+    type: project
+  organization:
+    name: Default
+    type: organization
+  related:
+    notification_templates_error: []
+    notification_templates_started: []
+    notification_templates_success: []
+    schedules: []
+  scm_branch: ''
+  scm_clean: true
+  scm_delete_on_update: false
+  scm_refspec: ''
+  scm_type: git
+  scm_update_cache_timeout: 0
+  scm_update_on_launch: true
+  scm_url: https://github.com/oatakan/ansible-sap-deployment-example.git
+  timeout: 0
+- allow_override: false
+  credential: null
+  custom_virtualenv: null
+  description: ''
+  local_path: _9__sap_workshop_playbooks
+  name: sap-workshop-playbooks
+  natural_key:
+    name: sap-workshop-playbooks
+    organization:
+      name: Default
+      type: organization
+    type: project
+  organization:
+    name: Default
+    type: organization
+  related:
+    notification_templates_error: []
+    notification_templates_started: []
+    notification_templates_success: []
+    schedules: []
+  scm_branch: ''
+  scm_clean: true
+  scm_delete_on_update: false
+  scm_refspec: ''
+  scm_type: git
+  scm_update_cache_timeout: 0
+  scm_update_on_launch: true
+  scm_url: https://github.com/oatakan/sap-hana-playbooks.git
+  timeout: 0
+- allow_override: false
+  credential: null
+  custom_virtualenv: null
+  description: ''
+  local_path: _10__ansible_rhel_update_example
+  name: ansible-rhel-update-example
+  natural_key:
+    name: ansible-rhel-update-example
+    organization:
+      name: Default
+      type: organization
+    type: project
+  organization:
+    name: Default
+    type: organization
+  related:
+    notification_templates_error: []
+    notification_templates_started: []
+    notification_templates_success: []
+    schedules: []
+  scm_branch: ''
+  scm_clean: true
+  scm_delete_on_update: false
+  scm_refspec: ''
+  scm_type: git
+  scm_update_cache_timeout: 0
+  scm_update_on_launch: true
+  scm_url: https://github.com/oatakan/ansible-rhel-update-example.git
+  timeout: 0
+

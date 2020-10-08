@@ -8,7 +8,7 @@ sap_rhsm_pools_ids:
 #sap_hana_ha_pacemaker_vip: "172.16.4.250"
 sap_hana_vip: "172.16.4.250"
 
-sap_password: "mysecretPassw0rd!"
+sap_password: "mysecretPassw0rd#"
 
 sap_install_sapcar_path: "/install/SAPCAR"
 sap_install_sapcar_file_name: "SAPCAR.EXE"

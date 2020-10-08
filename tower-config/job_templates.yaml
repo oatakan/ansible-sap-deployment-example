@@ -1,0 +1,753 @@
+job_templates:
+- allow_simultaneous: true
+  ask_credential_on_launch: false
+  ask_diff_mode_on_launch: false
+  ask_inventory_on_launch: false
+  ask_job_type_on_launch: false
+  ask_limit_on_launch: false
+  ask_scm_branch_on_launch: false
+  ask_skip_tags_on_launch: false
+  ask_tags_on_launch: false
+  ask_variables_on_launch: false
+  ask_verbosity_on_launch: false
+  become_enabled: true
+  custom_virtualenv: null
+  description: ''
+  diff_mode: false
+  extra_vars: '---
+    '
+  force_handlers: false
+  forks: 0
+  host_config_key: ''
+  inventory:
+    name: Localhost
+    organization:
+      name: Default
+      type: organization
+    type: inventory
+  job_slice_count: 1
+  job_tags: ''
+  job_type: run
+  limit: ''
+  name: Lab 1 - Delete Instances on AWS
+  natural_key:
+    name: Lab 1 - Delete Instances on AWS
+    organization:
+      name: Default
+      type: organization
+    type: job_template
+  playbook: sap_remove_ec2.yml
+  project:
+    name: ansible-sap-deployment-example
+    organization:
+      name: Default
+      type: organization
+    type: project
+  related:
+    credentials:
+    - credential_type:
+        kind: ssh
+        name: Machine
+        type: credential_type
+      name: aws-ansible-machine-key
+      organization:
+        name: Default
+        type: organization
+      type: credential
+    - credential_type:
+        kind: cloud
+        name: Amazon Web Services
+        type: credential_type
+      name: aws-cred
+      organization:
+        name: Default
+        type: organization
+      type: credential
+    labels: []
+    notification_templates_error: []
+    notification_templates_started: []
+    notification_templates_success: []
+    schedules: []
+    survey_spec: {}
+  scm_branch: ''
+  skip_tags: ''
+  start_at_task: ''
+  survey_enabled: false
+  timeout: 0
+  use_fact_cache: false
+  verbosity: 0
+  webhook_credential: null
+  webhook_service: ''
+- allow_simultaneous: true
+  ask_credential_on_launch: false
+  ask_diff_mode_on_launch: false
+  ask_inventory_on_launch: false
+  ask_job_type_on_launch: false
+  ask_limit_on_launch: false
+  ask_scm_branch_on_launch: false
+  ask_skip_tags_on_launch: false
+  ask_tags_on_launch: false
+  ask_variables_on_launch: false
+  ask_verbosity_on_launch: false
+  become_enabled: true
+  custom_virtualenv: null
+  description: ''
+  diff_mode: false
+  extra_vars: '---
+    '
+  force_handlers: false
+  forks: 0
+  host_config_key: ''
+  inventory:
+    name: Localhost
+    organization:
+      name: Default
+      type: organization
+    type: inventory
+  job_slice_count: 1
+  job_tags: ''
+  job_type: run
+  limit: ''
+  name: Lab 1 - Deploy Instances on AWS
+  natural_key:
+    name: Lab 1 - Deploy Instances on AWS
+    organization:
+      name: Default
+      type: organization
+    type: job_template
+  playbook: sap_infra_ec2.yml
+  project:
+    name: ansible-sap-deployment-example
+    organization:
+      name: Default
+      type: organization
+    type: project
+  related:
+    credentials:
+    - credential_type:
+        kind: ssh
+        name: Machine
+        type: credential_type
+      name: aws-ansible-machine-key
+      organization:
+        name: Default
+        type: organization
+      type: credential
+    - credential_type:
+        kind: cloud
+        name: Amazon Web Services
+        type: credential_type
+      name: aws-cred
+      organization:
+        name: Default
+        type: organization
+      type: credential
+    labels: []
+    notification_templates_error: []
+    notification_templates_started: []
+    notification_templates_success: []
+    schedules: []
+    survey_spec: {}
+  scm_branch: ''
+  skip_tags: ''
+  start_at_task: ''
+  survey_enabled: false
+  timeout: 0
+  use_fact_cache: false
+  verbosity: 0
+  webhook_credential: null
+  webhook_service: ''
+- allow_simultaneous: false
+  ask_credential_on_launch: false
+  ask_diff_mode_on_launch: false
+  ask_inventory_on_launch: false
+  ask_job_type_on_launch: false
+  ask_limit_on_launch: true
+  ask_scm_branch_on_launch: false
+  ask_skip_tags_on_launch: false
+  ask_tags_on_launch: false
+  ask_variables_on_launch: false
+  ask_verbosity_on_launch: false
+  become_enabled: false
+  custom_virtualenv: null
+  description: ''
+  diff_mode: false
+  extra_vars: ''
+  force_handlers: false
+  forks: 0
+  host_config_key: ''
+  inventory:
+    name: aws
+    organization:
+      name: Default
+      type: organization
+    type: inventory
+  job_slice_count: 1
+  job_tags: ''
+  job_type: run
+  limit: tag_app_sap_hana_ha_demo
+  name: Lab 1 - Initial Setup
+  natural_key:
+    name: Lab 1 - Initial Setup
+    organization:
+      name: Default
+      type: organization
+    type: job_template
+  playbook: 1-initial_setup.yml
+  project:
+    name: ansible-sap-deployment-example
+    organization:
+      name: Default
+      type: organization
+    type: project
+  related:
+    credentials:
+    - credential_type:
+        kind: ssh
+        name: Machine
+        type: credential_type
+      name: aws-ansible-machine-key-root-user
+      organization:
+        name: Default
+        type: organization
+      type: credential
+    labels: []
+    notification_templates_error: []
+    notification_templates_started: []
+    notification_templates_success: []
+    schedules: []
+    survey_spec: {}
+  scm_branch: ''
+  skip_tags: ''
+  start_at_task: ''
+  survey_enabled: false
+  timeout: 0
+  use_fact_cache: true
+  verbosity: 0
+  webhook_credential: null
+  webhook_service: ''
+- allow_simultaneous: false
+  ask_credential_on_launch: false
+  ask_diff_mode_on_launch: false
+  ask_inventory_on_launch: false
+  ask_job_type_on_launch: false
+  ask_limit_on_launch: true
+  ask_scm_branch_on_launch: false
+  ask_skip_tags_on_launch: false
+  ask_tags_on_launch: false
+  ask_variables_on_launch: true
+  ask_verbosity_on_launch: false
+  become_enabled: true
+  custom_virtualenv: null
+  description: ''
+  diff_mode: false
+  extra_vars: "---\nrepo_channels:\n  - rhel-8-for-x86_64-baseos-rpms\n  - rhel-8-for-x86_64-appstream-rpms\n\
+    \  - rhel-8-for-x86_64-sap-solutions-rpms\n  - rhel-8-for-x86_64-sap-netweaver-rpms\n\
+    \  - ansible-2-for-rhel-8-x86_64-rpms"
+  force_handlers: false
+  forks: 0
+  host_config_key: ''
+  inventory:
+    name: aws
+    organization:
+      name: Default
+      type: organization
+    type: inventory
+  job_slice_count: 1
+  job_tags: ''
+  job_type: run
+  limit: tag_app_sap_hana_ha_demo
+  name: Lab 1 - RHN Register
+  natural_key:
+    name: Lab 1 - RHN Register
+    organization:
+      name: Default
+      type: organization
+    type: job_template
+  playbook: rhel_register_rhn.yml
+  project:
+    name: ansible-rhel-update-example
+    organization:
+      name: Default
+      type: organization
+    type: project
+  related:
+    credentials:
+    - credential_type:
+        kind: ssh
+        name: Machine
+        type: credential_type
+      name: aws-ansible-machine-key
+      organization:
+        name: Default
+        type: organization
+      type: credential
+    - credential_type:
+        kind: cloud
+        name: RHN
+        type: credential_type
+      name: rhn
+      organization:
+        name: Default
+        type: organization
+      type: credential
+    labels: []
+    notification_templates_error: []
+    notification_templates_started: []
+    notification_templates_success: []
+    schedules: []
+    survey_spec: {}
+  scm_branch: ''
+  skip_tags: ''
+  start_at_task: ''
+  survey_enabled: false
+  timeout: 0
+  use_fact_cache: true
+  verbosity: 0
+  webhook_credential: null
+  webhook_service: ''
+- allow_simultaneous: false
+  ask_credential_on_launch: false
+  ask_diff_mode_on_launch: false
+  ask_inventory_on_launch: false
+  ask_job_type_on_launch: false
+  ask_limit_on_launch: true
+  ask_scm_branch_on_launch: false
+  ask_skip_tags_on_launch: false
+  ask_tags_on_launch: false
+  ask_variables_on_launch: false
+  ask_verbosity_on_launch: false
+  become_enabled: true
+  custom_virtualenv: null
+  description: ''
+  diff_mode: false
+  extra_vars: ''
+  force_handlers: false
+  forks: 0
+  host_config_key: ''
+  inventory:
+    name: aws
+    organization:
+      name: Default
+      type: organization
+    type: inventory
+  job_slice_count: 1
+  job_tags: ''
+  job_type: run
+  limit: tag_app_sap_hana_ha_demo
+  name: Lab 1 - RHN Unregister
+  natural_key:
+    name: Lab 1 - RHN Unregister
+    organization:
+      name: Default
+      type: organization
+    type: job_template
+  playbook: rhel_unregister_rhn.yml
+  project:
+    name: ansible-rhel-update-example
+    organization:
+      name: Default
+      type: organization
+    type: project
+  related:
+    credentials:
+    - credential_type:
+        kind: ssh
+        name: Machine
+        type: credential_type
+      name: aws-ansible-machine-key
+      organization:
+        name: Default
+        type: organization
+      type: credential
+    labels: []
+    notification_templates_error: []
+    notification_templates_started: []
+    notification_templates_success: []
+    schedules: []
+    survey_spec: {}
+  scm_branch: ''
+  skip_tags: ''
+  start_at_task: ''
+  survey_enabled: false
+  timeout: 0
+  use_fact_cache: true
+  verbosity: 0
+  webhook_credential: null
+  webhook_service: ''
+- allow_simultaneous: false
+  ask_credential_on_launch: false
+  ask_diff_mode_on_launch: false
+  ask_inventory_on_launch: false
+  ask_job_type_on_launch: false
+  ask_limit_on_launch: false
+  ask_scm_branch_on_launch: false
+  ask_skip_tags_on_launch: false
+  ask_tags_on_launch: false
+  ask_variables_on_launch: true
+  ask_verbosity_on_launch: false
+  become_enabled: true
+  custom_virtualenv: null
+  description: ''
+  diff_mode: false
+  extra_vars: '---
+
+    sap_password: "mysecretPassw0rd#"'
+  force_handlers: false
+  forks: 0
+  host_config_key: ''
+  inventory:
+    name: aws
+    organization:
+      name: Default
+      type: organization
+    type: inventory
+  job_slice_count: 1
+  job_tags: ''
+  job_type: run
+  limit: tag_app_sap_hana_ha_demo
+  name: Lab 2 - Deploy HANA
+  natural_key:
+    name: Lab 2 - Deploy HANA
+    organization:
+      name: Default
+      type: organization
+    type: job_template
+  playbook: 3-sap_deploy_hana.yml
+  project:
+    name: ansible-sap-deployment-example
+    organization:
+      name: Default
+      type: organization
+    type: project
+  related:
+    credentials:
+    - credential_type:
+        kind: ssh
+        name: Machine
+        type: credential_type
+      name: aws-ansible-machine-key-root-user
+      organization:
+        name: Default
+        type: organization
+      type: credential
+    labels: []
+    notification_templates_error: []
+    notification_templates_started: []
+    notification_templates_success: []
+    schedules: []
+    survey_spec: {}
+  scm_branch: ''
+  skip_tags: ''
+  start_at_task: ''
+  survey_enabled: false
+  timeout: 0
+  use_fact_cache: false
+  verbosity: 0
+  webhook_credential: null
+  webhook_service: ''
+- allow_simultaneous: false
+  ask_credential_on_launch: false
+  ask_diff_mode_on_launch: false
+  ask_inventory_on_launch: false
+  ask_job_type_on_launch: false
+  ask_limit_on_launch: false
+  ask_scm_branch_on_launch: false
+  ask_skip_tags_on_launch: false
+  ask_tags_on_launch: false
+  ask_variables_on_launch: true
+  ask_verbosity_on_launch: false
+  become_enabled: true
+  custom_virtualenv: null
+  description: ''
+  diff_mode: false
+  extra_vars: '---
+
+    sap_password: "mysecretPassw0rd#"'
+  force_handlers: false
+  forks: 0
+  host_config_key: ''
+  inventory:
+    name: aws
+    organization:
+      name: Default
+      type: organization
+    type: inventory
+  job_slice_count: 1
+  job_tags: ''
+  job_type: run
+  limit: tag_app_sap_hana_ha_demo
+  name: Lab 2 - Deploy S4
+  natural_key:
+    name: Lab 2 - Deploy S4
+    organization:
+      name: Default
+      type: organization
+    type: job_template
+  playbook: 4-sap_deploy_s4.yml
+  project:
+    name: ansible-sap-deployment-example
+    organization:
+      name: Default
+      type: organization
+    type: project
+  related:
+    credentials:
+    - credential_type:
+        kind: ssh
+        name: Machine
+        type: credential_type
+      name: aws-ansible-machine-key-root-user
+      organization:
+        name: Default
+        type: organization
+      type: credential
+    labels: []
+    notification_templates_error: []
+    notification_templates_started: []
+    notification_templates_success: []
+    schedules: []
+    survey_spec: {}
+  scm_branch: ''
+  skip_tags: ''
+  start_at_task: ''
+  survey_enabled: false
+  timeout: 0
+  use_fact_cache: false
+  verbosity: 0
+  webhook_credential: null
+  webhook_service: ''
+- allow_simultaneous: false
+  ask_credential_on_launch: false
+  ask_diff_mode_on_launch: false
+  ask_inventory_on_launch: false
+  ask_job_type_on_launch: false
+  ask_limit_on_launch: false
+  ask_scm_branch_on_launch: false
+  ask_skip_tags_on_launch: false
+  ask_tags_on_launch: false
+  ask_variables_on_launch: false
+  ask_verbosity_on_launch: false
+  become_enabled: true
+  custom_virtualenv: null
+  description: ''
+  diff_mode: false
+  extra_vars: ''
+  force_handlers: false
+  forks: 0
+  host_config_key: ''
+  inventory:
+    name: aws
+    organization:
+      name: Default
+      type: organization
+    type: inventory
+  job_slice_count: 1
+  job_tags: ''
+  job_type: run
+  limit: tag_app_sap_hana_ha_demo
+  name: Lab 2 - SAP Prepare
+  natural_key:
+    name: Lab 2 - SAP Prepare
+    organization:
+      name: Default
+      type: organization
+    type: job_template
+  playbook: 2-sap_prepare.yml
+  project:
+    name: ansible-sap-deployment-example
+    organization:
+      name: Default
+      type: organization
+    type: project
+  related:
+    credentials:
+    - credential_type:
+        kind: ssh
+        name: Machine
+        type: credential_type
+      name: aws-ansible-machine-key-root-user
+      organization:
+        name: Default
+        type: organization
+      type: credential
+    labels: []
+    notification_templates_error: []
+    notification_templates_started: []
+    notification_templates_success: []
+    schedules: []
+    survey_spec: {}
+  scm_branch: ''
+  skip_tags: ''
+  start_at_task: ''
+  survey_enabled: false
+  timeout: 0
+  use_fact_cache: false
+  verbosity: 0
+  webhook_credential: null
+  webhook_service: ''
+- allow_simultaneous: false
+  ask_credential_on_launch: false
+  ask_diff_mode_on_launch: false
+  ask_inventory_on_launch: false
+  ask_job_type_on_launch: false
+  ask_limit_on_launch: false
+  ask_scm_branch_on_launch: false
+  ask_skip_tags_on_launch: false
+  ask_tags_on_launch: false
+  ask_variables_on_launch: false
+  ask_verbosity_on_launch: false
+  become_enabled: false
+  custom_virtualenv: null
+  description: ''
+  diff_mode: false
+  extra_vars: ''
+  force_handlers: false
+  forks: 0
+  host_config_key: ''
+  inventory:
+    name: Lab 4 - RHEL 8
+    organization:
+      name: Default
+      type: organization
+    type: inventory
+  job_slice_count: 1
+  job_tags: ''
+  job_type: run
+  limit: ''
+  name: Lab 4 - Check Vulnerabilities
+  natural_key:
+    name: Lab 4 - Check Vulnerabilities
+    organization:
+      name: Default
+      type: organization
+    type: job_template
+  playbook: check_vulner.yml
+  project:
+    name: ansible-rhel-update-example
+    organization:
+      name: Default
+      type: organization
+    type: project
+  related:
+    credentials:
+    - credential_type:
+        kind: ssh
+        name: Machine
+        type: credential_type
+      name: aws-ansible-machine-key-root-user
+      organization:
+        name: Default
+        type: organization
+      type: credential
+    labels: []
+    notification_templates_error: []
+    notification_templates_started: []
+    notification_templates_success: []
+    schedules: []
+    survey_spec:
+      description: ''
+      name: ''
+      spec:
+      - choices: cve_2019_11135
+        default: cve_2019_11135
+        max: null
+        min: null
+        new_question: true
+        question_description: ''
+        question_name: Select vulnerability to check for?
+        required: true
+        type: multiplechoice
+        variable: vulner
+  scm_branch: ''
+  skip_tags: ''
+  start_at_task: ''
+  survey_enabled: true
+  timeout: 0
+  use_fact_cache: true
+  verbosity: 0
+  webhook_credential: null
+  webhook_service: ''
+- allow_simultaneous: false
+  ask_credential_on_launch: false
+  ask_diff_mode_on_launch: false
+  ask_inventory_on_launch: false
+  ask_job_type_on_launch: false
+  ask_limit_on_launch: false
+  ask_scm_branch_on_launch: false
+  ask_skip_tags_on_launch: false
+  ask_tags_on_launch: false
+  ask_variables_on_launch: false
+  ask_verbosity_on_launch: false
+  become_enabled: false
+  custom_virtualenv: null
+  description: ''
+  diff_mode: false
+  extra_vars: ''
+  force_handlers: false
+  forks: 0
+  host_config_key: ''
+  inventory:
+    name: Lab 4 - RHEL 8 - Vulnerable
+    organization:
+      name: Default
+      type: organization
+    type: inventory
+  job_slice_count: 1
+  job_tags: ''
+  job_type: run
+  limit: ''
+  name: Lab 4 - Live Kernel Patch
+  natural_key:
+    name: Lab 4 - Live Kernel Patch
+    organization:
+      name: Default
+      type: organization
+    type: job_template
+  playbook: kpatch_rhel.yml
+  project:
+    name: ansible-rhel-update-example
+    organization:
+      name: Default
+      type: organization
+    type: project
+  related:
+    credentials:
+    - credential_type:
+        kind: ssh
+        name: Machine
+        type: credential_type
+      name: aws-ansible-machine-key-root-user
+      organization:
+        name: Default
+        type: organization
+      type: credential
+    labels: []
+    notification_templates_error: []
+    notification_templates_started: []
+    notification_templates_success: []
+    schedules: []
+    survey_spec:
+      description: ''
+      name: ''
+      spec:
+      - choices: cve_2019_11135
+        default: cve_2019_11135
+        max: null
+        min: null
+        new_question: true
+        question_description: ''
+        question_name: Select vulnerability to check for?
+        required: true
+        type: multiplechoice
+        variable: vulner
+  scm_branch: ''
+  skip_tags: ''
+  start_at_task: ''
+  survey_enabled: true
+  timeout: 0
+  use_fact_cache: true
+  verbosity: 0
+  webhook_credential: null
+  webhook_service: ''
+

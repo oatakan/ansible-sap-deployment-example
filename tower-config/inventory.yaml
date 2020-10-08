@@ -1,0 +1,63 @@
+inventory:
+- description: 'aws'
+  host_filter: null
+  insights_credential: null
+  kind: ''
+  name: aws
+  natural_key:
+    name: aws
+    organization:
+      name: Default
+      type: organization
+    type: inventory
+  organization:
+    name: Default
+    type: organization
+  variables: '---'
+- description: ''
+  host_filter: ansible_facts__ansible_distribution="RedHat" and ansible_facts__ansible_distribution_release="Ootpa"
+  insights_credential: null
+  kind: smart
+  name: Lab 4 - RHEL 8
+  natural_key:
+    name: Lab 4 - RHEL 8
+    organization:
+      name: Default
+      type: organization
+    type: inventory
+  organization:
+    name: Default
+    type: organization
+  variables: ''
+- description: ''
+  host_filter: ansible_facts__ansible_distribution="RedHat" and ansible_facts__ansible_distribution_release="Ootpa"
+    and ansible_facts__security_system_vulnerable=true and groups__name=tag_app_sap_hana_ha_demo
+  insights_credential: null
+  kind: smart
+  name: Lab 4 - RHEL 8 - Vulnerable
+  natural_key:
+    name: Lab 4 - RHEL 8 - Vulnerable
+    organization:
+      name: Default
+      type: organization
+    type: inventory
+  organization:
+    name: Default
+    type: organization
+  variables: ''
+- description: ''
+  host_filter: null
+  insights_credential: null
+  kind: ''
+  name: Localhost
+  natural_key:
+    name: Localhost
+    organization:
+      name: Default
+      type: organization
+    type: inventory
+  organization:
+    name: Default
+    type: organization
+  variables: '---'
+

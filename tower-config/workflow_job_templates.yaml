@@ -1,0 +1,580 @@
+workflow_job_templates:
+- allow_simultaneous: false
+  ask_inventory_on_launch: false
+  ask_limit_on_launch: false
+  ask_scm_branch_on_launch: false
+  ask_variables_on_launch: false
+  description: ''
+  extra_vars: ''
+  inventory: null
+  limit: null
+  name: Lab 1 - Deploy Environment
+  natural_key:
+    name: Lab 1 - Deploy Environment
+    organization:
+      name: Default
+      type: organization
+    type: workflow_job_template
+  organization:
+    name: Default
+    type: organization
+  related:
+    labels: []
+    notification_templates_approvals: []
+    notification_templates_error: []
+    notification_templates_started: []
+    notification_templates_success: []
+    schedules: []
+    survey_spec: {}
+    workflow_nodes:
+    - all_parents_must_converge: false
+      diff_mode: null
+      extra_data: {}
+      identifier: a14cceb1-cded-4546-8cd8-9061dbfd6326
+      inventory: null
+      job_tags: null
+      job_type: null
+      limit: null
+      natural_key:
+        identifier: a14cceb1-cded-4546-8cd8-9061dbfd6326
+        type: workflow_job_template_node
+        workflow_job_template:
+          name: Lab 1 - Deploy Environment
+          organization:
+            name: Default
+            type: organization
+          type: workflow_job_template
+      related:
+        always_nodes: []
+        credentials: []
+        failure_nodes: []
+        success_nodes:
+        - identifier: 5e9470f9-5e0c-4b20-87df-72243b914480
+          type: workflow_job_template_node
+          workflow_job_template:
+            name: Lab 1 - Deploy Environment
+            organization:
+              name: Default
+              type: organization
+            type: workflow_job_template
+      scm_branch: null
+      skip_tags: null
+      unified_job_template:
+        name: Lab 1 - Deploy Instances on AWS
+        organization:
+          name: Default
+          type: organization
+        type: job_template
+      verbosity: null
+      workflow_job_template:
+        name: Lab 1 - Deploy Environment
+        organization:
+          name: Default
+          type: organization
+        type: workflow_job_template
+    - all_parents_must_converge: false
+      diff_mode: null
+      extra_data:
+        repo_channels:
+        - rhel-8-for-x86_64-baseos-rpms
+        - rhel-8-for-x86_64-appstream-rpms
+        - rhel-8-for-x86_64-sap-solutions-rpms
+        - rhel-8-for-x86_64-sap-netweaver-rpms
+        - ansible-2-for-rhel-8-x86_64-rpms
+      identifier: 5e9470f9-5e0c-4b20-87df-72243b914480
+      inventory: null
+      job_tags: null
+      job_type: null
+      limit: null
+      natural_key:
+        identifier: 5e9470f9-5e0c-4b20-87df-72243b914480
+        type: workflow_job_template_node
+        workflow_job_template:
+          name: Lab 1 - Deploy Environment
+          organization:
+            name: Default
+            type: organization
+          type: workflow_job_template
+      related:
+        always_nodes: []
+        credentials: []
+        failure_nodes: []
+        success_nodes:
+        - identifier: 41a683b0-bec2-4d05-b8bd-01062755c9da
+          type: workflow_job_template_node
+          workflow_job_template:
+            name: Lab 1 - Deploy Environment
+            organization:
+              name: Default
+              type: organization
+            type: workflow_job_template
+      scm_branch: null
+      skip_tags: null
+      unified_job_template:
+        name: Lab 1 - RHN Register
+        organization:
+          name: Default
+          type: organization
+        type: job_template
+      verbosity: null
+      workflow_job_template:
+        name: Lab 1 - Deploy Environment
+        organization:
+          name: Default
+          type: organization
+        type: workflow_job_template
+    - all_parents_must_converge: false
+      diff_mode: null
+      extra_data: {}
+      identifier: 41a683b0-bec2-4d05-b8bd-01062755c9da
+      inventory: null
+      job_tags: null
+      job_type: null
+      limit: null
+      natural_key:
+        identifier: 41a683b0-bec2-4d05-b8bd-01062755c9da
+        type: workflow_job_template_node
+        workflow_job_template:
+          name: Lab 1 - Deploy Environment
+          organization:
+            name: Default
+            type: organization
+          type: workflow_job_template
+      related:
+        always_nodes: []
+        credentials: []
+        failure_nodes: []
+        success_nodes: []
+      scm_branch: null
+      skip_tags: null
+      unified_job_template:
+        name: Lab 1 - Initial Setup
+        organization:
+          name: Default
+          type: organization
+        type: job_template
+      verbosity: null
+      workflow_job_template:
+        name: Lab 1 - Deploy Environment
+        organization:
+          name: Default
+          type: organization
+        type: workflow_job_template
+    - all_parents_must_converge: false
+      diff_mode: null
+      extra_data: {}
+      identifier: b8c65ec8-708f-4fb6-a660-b50cbcdd8a38
+      inventory: null
+      job_tags: null
+      job_type: null
+      limit: null
+      natural_key:
+        identifier: b8c65ec8-708f-4fb6-a660-b50cbcdd8a38
+        type: workflow_job_template_node
+        workflow_job_template:
+          name: Lab 1 - Deploy Environment
+          organization:
+            name: Default
+            type: organization
+          type: workflow_job_template
+      related:
+        always_nodes:
+        - identifier: a14cceb1-cded-4546-8cd8-9061dbfd6326
+          type: workflow_job_template_node
+          workflow_job_template:
+            name: Lab 1 - Deploy Environment
+            organization:
+              name: Default
+              type: organization
+            type: workflow_job_template
+        credentials: []
+        failure_nodes: []
+        success_nodes: []
+      scm_branch: null
+      skip_tags: null
+      unified_job_template:
+        inventory:
+          name: aws
+          organization:
+            name: Default
+            type: organization
+          type: inventory
+        name: aws
+        type: inventory_source
+      verbosity: null
+      workflow_job_template:
+        name: Lab 1 - Deploy Environment
+        organization:
+          name: Default
+          type: organization
+        type: workflow_job_template
+  scm_branch: null
+  survey_enabled: false
+  webhook_credential: null
+  webhook_service: ''
+- allow_simultaneous: false
+  ask_inventory_on_launch: false
+  ask_limit_on_launch: false
+  ask_scm_branch_on_launch: false
+  ask_variables_on_launch: false
+  description: ''
+  extra_vars: ''
+  inventory: null
+  limit: null
+  name: Lab 1 - Reset Environment
+  natural_key:
+    name: Lab 1 - Reset Environment
+    organization:
+      name: Default
+      type: organization
+    type: workflow_job_template
+  organization:
+    name: Default
+    type: organization
+  related:
+    labels: []
+    notification_templates_approvals: []
+    notification_templates_error: []
+    notification_templates_started: []
+    notification_templates_success: []
+    schedules: []
+    survey_spec: {}
+    workflow_nodes:
+    - all_parents_must_converge: false
+      diff_mode: null
+      extra_data: {}
+      identifier: 1580655a-b5ef-44a0-8afb-f7c775bfc21a
+      inventory: null
+      job_tags: null
+      job_type: null
+      limit: null
+      natural_key:
+        identifier: 1580655a-b5ef-44a0-8afb-f7c775bfc21a
+        type: workflow_job_template_node
+        workflow_job_template:
+          name: Lab 1 - Reset Environment
+          organization:
+            name: Default
+            type: organization
+          type: workflow_job_template
+      related:
+        always_nodes:
+        - identifier: 7ef26c3c-1482-422b-9537-210c1ea66d41
+          type: workflow_job_template_node
+          workflow_job_template:
+            name: Lab 1 - Reset Environment
+            organization:
+              name: Default
+              type: organization
+            type: workflow_job_template
+        credentials: []
+        failure_nodes: []
+        success_nodes: []
+      scm_branch: null
+      skip_tags: null
+      unified_job_template:
+        name: Lab 1 - RHN Unregister
+        organization:
+          name: Default
+          type: organization
+        type: job_template
+      verbosity: null
+      workflow_job_template:
+        name: Lab 1 - Reset Environment
+        organization:
+          name: Default
+          type: organization
+        type: workflow_job_template
+    - all_parents_must_converge: false
+      diff_mode: null
+      extra_data: {}
+      identifier: 35c39e4b-15f5-4d8f-88c6-501b91e03521
+      inventory: null
+      job_tags: null
+      job_type: null
+      limit: null
+      natural_key:
+        identifier: 35c39e4b-15f5-4d8f-88c6-501b91e03521
+        type: workflow_job_template_node
+        workflow_job_template:
+          name: Lab 1 - Reset Environment
+          organization:
+            name: Default
+            type: organization
+          type: workflow_job_template
+      related:
+        always_nodes: []
+        credentials: []
+        failure_nodes: []
+        success_nodes: []
+      scm_branch: null
+      skip_tags: null
+      unified_job_template:
+        name: Lab 1 - Deploy Environment
+        organization:
+          name: Default
+          type: organization
+        type: workflow_job_template
+      verbosity: null
+      workflow_job_template:
+        name: Lab 1 - Reset Environment
+        organization:
+          name: Default
+          type: organization
+        type: workflow_job_template
+    - all_parents_must_converge: false
+      diff_mode: null
+      extra_data: {}
+      identifier: 7ef26c3c-1482-422b-9537-210c1ea66d41
+      inventory: null
+      job_tags: null
+      job_type: null
+      limit: null
+      natural_key:
+        identifier: 7ef26c3c-1482-422b-9537-210c1ea66d41
+        type: workflow_job_template_node
+        workflow_job_template:
+          name: Lab 1 - Reset Environment
+          organization:
+            name: Default
+            type: organization
+          type: workflow_job_template
+      related:
+        always_nodes: []
+        credentials: []
+        failure_nodes: []
+        success_nodes:
+        - identifier: 35c39e4b-15f5-4d8f-88c6-501b91e03521
+          type: workflow_job_template_node
+          workflow_job_template:
+            name: Lab 1 - Reset Environment
+            organization:
+              name: Default
+              type: organization
+            type: workflow_job_template
+      scm_branch: null
+      skip_tags: null
+      unified_job_template:
+        name: Lab 1 - Delete Instances on AWS
+        organization:
+          name: Default
+          type: organization
+        type: job_template
+      verbosity: null
+      workflow_job_template:
+        name: Lab 1 - Reset Environment
+        organization:
+          name: Default
+          type: organization
+        type: workflow_job_template
+  scm_branch: null
+  survey_enabled: false
+  webhook_credential: null
+  webhook_service: ''
+- allow_simultaneous: false
+  ask_inventory_on_launch: false
+  ask_limit_on_launch: false
+  ask_scm_branch_on_launch: false
+  ask_variables_on_launch: true
+  description: ''
+  extra_vars: '---
+
+    sap_password: "mysecretPassw0rd#"'
+  inventory: null
+  limit: null
+  name: Lab 2 - Reset Environment and Deploy SAP
+  natural_key:
+    name: Lab 2 - Reset Environment and Deploy SAP
+    organization:
+      name: Default
+      type: organization
+    type: workflow_job_template
+  organization:
+    name: Default
+    type: organization
+  related:
+    labels: []
+    notification_templates_approvals: []
+    notification_templates_error: []
+    notification_templates_started: []
+    notification_templates_success: []
+    schedules: []
+    survey_spec: {}
+    workflow_nodes:
+    - all_parents_must_converge: false
+      diff_mode: null
+      extra_data: {}
+      identifier: 137e8867-10ce-4fbe-bf1b-81340afdcf6d
+      inventory: null
+      job_tags: null
+      job_type: null
+      limit: null
+      natural_key:
+        identifier: 137e8867-10ce-4fbe-bf1b-81340afdcf6d
+        type: workflow_job_template_node
+        workflow_job_template:
+          name: Lab 2 - Reset Environment and Deploy SAP
+          organization:
+            name: Default
+            type: organization
+          type: workflow_job_template
+      related:
+        always_nodes: []
+        credentials: []
+        failure_nodes: []
+        success_nodes:
+        - identifier: d006d291-8086-44e8-8432-f8fee13002e7
+          type: workflow_job_template_node
+          workflow_job_template:
+            name: Lab 2 - Reset Environment and Deploy SAP
+            organization:
+              name: Default
+              type: organization
+            type: workflow_job_template
+      scm_branch: null
+      skip_tags: null
+      unified_job_template:
+        name: Lab 2 - SAP Prepare
+        organization:
+          name: Default
+          type: organization
+        type: job_template
+      verbosity: null
+      workflow_job_template:
+        name: Lab 2 - Reset Environment and Deploy SAP
+        organization:
+          name: Default
+          type: organization
+        type: workflow_job_template
+    - all_parents_must_converge: false
+      diff_mode: null
+      extra_data: {}
+      identifier: d006d291-8086-44e8-8432-f8fee13002e7
+      inventory: null
+      job_tags: null
+      job_type: null
+      limit: null
+      natural_key:
+        identifier: d006d291-8086-44e8-8432-f8fee13002e7
+        type: workflow_job_template_node
+        workflow_job_template:
+          name: Lab 2 - Reset Environment and Deploy SAP
+          organization:
+            name: Default
+            type: organization
+          type: workflow_job_template
+      related:
+        always_nodes: []
+        credentials: []
+        failure_nodes: []
+        success_nodes:
+        - identifier: 5b085eba-0a29-4ef2-b34e-5b4f38fa9abb
+          type: workflow_job_template_node
+          workflow_job_template:
+            name: Lab 2 - Reset Environment and Deploy SAP
+            organization:
+              name: Default
+              type: organization
+            type: workflow_job_template
+      scm_branch: null
+      skip_tags: null
+      unified_job_template:
+        name: Lab 2 - Deploy HANA
+        organization:
+          name: Default
+          type: organization
+        type: job_template
+      verbosity: null
+      workflow_job_template:
+        name: Lab 2 - Reset Environment and Deploy SAP
+        organization:
+          name: Default
+          type: organization
+        type: workflow_job_template
+    - all_parents_must_converge: false
+      diff_mode: null
+      extra_data: {}
+      identifier: 30e9b825-92fa-4cff-a68a-17447c648027
+      inventory: null
+      job_tags: null
+      job_type: null
+      limit: null
+      natural_key:
+        identifier: 30e9b825-92fa-4cff-a68a-17447c648027
+        type: workflow_job_template_node
+        workflow_job_template:
+          name: Lab 2 - Reset Environment and Deploy SAP
+          organization:
+            name: Default
+            type: organization
+          type: workflow_job_template
+      related:
+        always_nodes: []
+        credentials: []
+        failure_nodes: []
+        success_nodes:
+        - identifier: 137e8867-10ce-4fbe-bf1b-81340afdcf6d
+          type: workflow_job_template_node
+          workflow_job_template:
+            name: Lab 2 - Reset Environment and Deploy SAP
+            organization:
+              name: Default
+              type: organization
+            type: workflow_job_template
+      scm_branch: null
+      skip_tags: null
+      unified_job_template:
+        name: Lab 1 - Reset Environment
+        organization:
+          name: Default
+          type: organization
+        type: workflow_job_template
+      verbosity: null
+      workflow_job_template:
+        name: Lab 2 - Reset Environment and Deploy SAP
+        organization:
+          name: Default
+          type: organization
+        type: workflow_job_template
+    - all_parents_must_converge: false
+      diff_mode: null
+      extra_data: {}
+      identifier: 5b085eba-0a29-4ef2-b34e-5b4f38fa9abb
+      inventory: null
+      job_tags: null
+      job_type: null
+      limit: null
+      natural_key:
+        identifier: 5b085eba-0a29-4ef2-b34e-5b4f38fa9abb
+        type: workflow_job_template_node
+        workflow_job_template:
+          name: Lab 2 - Reset Environment and Deploy SAP
+          organization:
+            name: Default
+            type: organization
+          type: workflow_job_template
+      related:
+        always_nodes: []
+        credentials: []
+        failure_nodes: []
+        success_nodes: []
+      scm_branch: null
+      skip_tags: null
+      unified_job_template:
+        name: Lab 2 - Deploy S4
+        organization:
+          name: Default
+          type: organization
+        type: job_template
+      verbosity: null
+      workflow_job_template:
+        name: Lab 2 - Reset Environment and Deploy SAP
+        organization:
+          name: Default
+          type: organization
+        type: workflow_job_template
+  scm_branch: null
+  survey_enabled: false
+  webhook_credential: null
+  webhook_service: ''
+
