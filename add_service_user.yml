@@ -8,7 +8,6 @@
       user:
         name: "{{ service_user_name }}"
         shell: /bin/bash
-        group: sudo
         password: "{{ service_user_password | password_hash('sha512') }}"
 
     - name: create sudoers config
