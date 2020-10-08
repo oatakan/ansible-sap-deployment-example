@@ -20,7 +20,7 @@
     - name: enable Password authentication for SSH
       lineinfile:
         path: /etc/ssh/sshd_config
-        regex: ^(# *)?PasswordAuthentication
+        regex: ^(# *)?PasswordAuthentication no
         line: PasswordAuthentication yes
         backrefs: yes
       notify: restart sshd
