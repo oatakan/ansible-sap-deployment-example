@@ -16,6 +16,16 @@
 - name: gather new facts
   setup:
 
+- name: add vip to hosts file for db
+  lineinfile:
+    dest: /etc/hosts
+    regexp: '.*{{ sap_db_host }}$'
+    line: "{{ sap_hana_vip }} {{ sap_db_host }} {{ sap_db_host }}.{{ domain_name }}"
+    state: present
+  when:
+    - sap_db_host is defined
+    - sap_hana_vip is defined
+
 - name: check subscription status
   command: subscription-manager status
   register: sat_sub_status
