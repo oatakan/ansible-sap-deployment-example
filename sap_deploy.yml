@@ -41,7 +41,7 @@
       loop_control:
         loop_var: role_name
       loop:
-        - s4-hosts
+#        - s4-hosts
         - sap-hana-preconfigure
         - redhat_sap.sap_hana_deployment
         - redhat_sap.sap_hana_hsr
