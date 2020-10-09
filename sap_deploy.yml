@@ -81,6 +81,6 @@
     sap_hana_vip: "{{ hostvars['hana_primary']['ip_address'] }}"
 
   roles:
-    - s4-hosts
     - sap-netweaver-preconfigure
+    - s4-hosts
     - sap_s4hana_deployment
