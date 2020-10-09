@@ -15,6 +15,17 @@
   become_method: su
 
   tasks:
+    # this a temporary measure before implementing real vip
+    - block:
+        - name: set primary hana server ip
+          add_host:
+            name: hana_primary
+            ip_address: "{{ ansible_ip_addresses[0] | default(ec2_private_ip_address) | default(ansible_host) | default(ansible_ssh_host) }}"
+
+        - debug:
+            var: hostvars['hana_primary']['ip_address']
+      when: sap_hana_hsr_role == 'primary'
+
     - name: check existing hana installation
       stat:
         path: "/usr/sap/{{ sap_hana_deployment_hana_sid }}/HDB{{ sap_hana_deployment_hana_instance_number }}/exe/hdbsql"
@@ -24,9 +35,13 @@
     - include_role:
         name: "{{ role_name }}"
       when: (not hana_installation_check.stat.exists) | default(True)
+      vars:
+        # this a temporary measure before implementing real vip
+        sap_hana_vip: "{{ hostvars['hana_primary']['ip_address'] }}"
       loop_control:
         loop_var: role_name
       loop:
+        - s4-hosts
         - sap-hana-preconfigure
         - redhat_sap.sap_hana_deployment
         - redhat_sap.sap_hana_hsr
@@ -46,26 +61,17 @@
 
         - debug:
             msg: "{{ db_overwrite_cmd }}"
-
-         # this a temporary measure before implementing real vip
-        - name: set primary hana server ip
-          add_host:
-            name: hana_primary
-            ip_address: "{{ ansible_ip_addresses[0] | default(ec2_private_ip_address) | default(ansible_host) | default(ansible_ssh_host) }}"
-
-        - debug:
-            var: hostvars['hana_primary']['ip_address']
       when: sap_hana_hsr_role == 'primary'
 
-- name: hana pacemaker
-  hosts: "tag_app_sap_hana_ha_demo:&tag_role_hana"
-  become_method: su
-  vars:
-    # this a temporary measure before implementing real vip
-    sap_hana_ha_pacemaker_vip: "{{ hostvars['hana_primary']['ip_address'] }}"
-
-  roles:
-    - redhat_sap.sap_hana_ha_pacemaker
+#- name: hana pacemaker
+#  hosts: "tag_app_sap_hana_ha_demo:&tag_role_hana"
+#  become_method: su
+#  vars:
+#    # this a temporary measure before implementing real vip
+#    sap_hana_ha_pacemaker_vip: "{{ hostvars['hana_primary']['ip_address'] }}"
+#
+#  roles:
+#    - redhat_sap.sap_hana_ha_pacemaker
 
 - name: preconfigure netweaver and install s4 app
   hosts: "tag_app_sap_hana_ha_demo:&tag_role_s4app"
@@ -75,6 +81,6 @@
     sap_hana_vip: "{{ hostvars['hana_primary']['ip_address'] }}"
 
   roles:
+    - s4-hosts
     - sap-netweaver-preconfigure
-#    - s4-hosts
     - sap_s4hana_deployment
