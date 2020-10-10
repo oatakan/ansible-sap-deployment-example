@@ -45,6 +45,7 @@
         - sap-hana-preconfigure
         - redhat_sap.sap_hana_deployment
         - redhat_sap.sap_hana_hsr
+        - redhat_sap.sap_hana_ha_pacemaker
 
     - block:
         - name: prevent transaction log to fill up disk
@@ -75,12 +76,12 @@
     - s4-hosts
     - sap_s4hana_deployment
 
-- name: hana pacemaker
-  hosts: "tag_app_sap_hana_ha_demo:&tag_role_hana"
-  become_method: su
-  vars:
-    # this a temporary measure before implementing real vip
-    sap_hana_ha_pacemaker_vip: "{{ hostvars['hana_primary']['ip_address'] }}"
-
-  roles:
-    - redhat_sap.sap_hana_ha_pacemaker
+#- name: hana pacemaker
+#  hosts: "tag_app_sap_hana_ha_demo:&tag_role_hana"
+#  become_method: su
+#  vars:
+#    # this a temporary measure before implementing real vip
+#    sap_hana_ha_pacemaker_vip: "{{ hostvars['hana_primary']['ip_address'] }}"
+#
+#  roles:
+#    - redhat_sap.sap_hana_ha_pacemaker
