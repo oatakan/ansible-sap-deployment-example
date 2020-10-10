@@ -1,0 +1,8 @@
+- name: run swapon
+  command: swapon /dev/mapper/storage_pools[0].name-swap
+
+- name: set swappiness
+  sysctl:
+    name: vm.swappiness
+    value: "{{ swap_swappiness }}"
+    state: present

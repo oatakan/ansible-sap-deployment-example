@@ -4,3 +4,5 @@ local_repo_path: /software
 
 aws_storage_bucket_name: demo-bucket
 domain_name: ec2.internal
+
+swap_swappiness: 60
