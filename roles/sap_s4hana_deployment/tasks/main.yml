@@ -33,27 +33,34 @@
     remote_src: yes
   when: sap_s4hana_deployment_use_password_file == "y"
 
-- name: Install SAP S4HANA
+- name: Install SAP S4HANA with background process (monitor on the system)
   shell: >-
-    ./sapinst SAPINST_INPUT_PARAMETERS_URL={{ tmpdir.path }}/inifile.params \
+    cd {{ sapinst_path }}; nohup ./sapinst SAPINST_INPUT_PARAMETERS_URL={{ tmpdir.path }}/inifile.params \
     SAPINST_EXECUTE_PRODUCT_ID={{ sap_s4hana_deployment_product_id }} \
     SAPINST_SKIP_DIALOGS=true SAPINST_START_GUISERVER=false
-  args:
-    chdir: "{{ sapinst_path }}"
-  async: 7200
-  poll: 0
-  register: installs4hana
+  failed_when: false
 
-- name: Wait for SAP S4HANA installation to complete
-  async_status:
-    jid: "{{ installs4hana.ansible_job_id }}"
-  register: check_install
-  until: check_install.finished
-  retries: 600
-  delay: 10
-  changed_when:
-    - "'SAPinst build information' in (check_install.stdout | default(''))"
-    - "'An empty directory is required for a new SAP system installation' not in (check_install.stdout | default(''))"
-  failed_when:
-    - (check_install.rc | default(0)) > 0
-    - "'An empty directory is required for a new SAP system installation' not in (check_install.stdout | default(''))"
+#- name: Install SAP S4HANA
+#  shell: >-
+#    ./sapinst SAPINST_INPUT_PARAMETERS_URL={{ tmpdir.path }}/inifile.params \
+#    SAPINST_EXECUTE_PRODUCT_ID={{ sap_s4hana_deployment_product_id }} \
+#    SAPINST_SKIP_DIALOGS=true SAPINST_START_GUISERVER=false
+#  args:
+#    chdir: "{{ sapinst_path }}"
+#  async: 7200
+#  poll: 0
+#  register: installs4hana
+#
+#- name: Wait for SAP S4HANA installation to complete
+#  async_status:
+#    jid: "{{ installs4hana.ansible_job_id }}"
+#  register: check_install
+#  until: check_install.finished
+#  retries: 600
+#  delay: 10
+#  changed_when:
+#    - "'SAPinst build information' in (check_install.stdout | default(''))"
+#    - "'An empty directory is required for a new SAP system installation' not in (check_install.stdout | default(''))"
+#  failed_when:
+#    - (check_install.rc | default(0)) > 0
+#    - "'An empty directory is required for a new SAP system installation' not in (check_install.stdout | default(''))"

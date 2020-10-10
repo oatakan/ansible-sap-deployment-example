@@ -4,7 +4,7 @@
   lineinfile:
     dest: /etc/hosts
     regexp: '.*{{ sap_db_host }}$'
-    line: "{{ sap_hana_vip }} {{ sap_db_host }} {{ sap_db_host }}.{{ domain_name }}"
+    line: "{{ sap_hana_vip }} {{ sap_db_host }}.{{ domain_name }} {{ sap_db_host }}"
     state: present
   when:
     - sap_db_host is defined
