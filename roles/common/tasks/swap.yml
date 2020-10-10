@@ -18,6 +18,6 @@
     src: /dev/mapper/{{ storage_pools[0].name }}-swap
     fstype: swap
     opts: sw,nofail
-    passno: 0
-    dump: 0
+    passno: "0"
+    dump: "0"
     state: present
