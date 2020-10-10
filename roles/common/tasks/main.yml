@@ -87,7 +87,7 @@
     - storage_pools is defined
     - storage_pools | length > 0
     - storage_pools[0].name is defined
-    - ('swap' in (storage_pools[0].volumes | map(attribute='name') | list)
+    - ('swap' in (storage_pools[0].volumes | map(attribute='name') | list))
 
 #- name: set grub to default to the old kernel for kernel patching scenario
 #  shell: /usr/sbin/grubby --set-default-index=1
