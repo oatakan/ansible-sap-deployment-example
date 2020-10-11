@@ -41,11 +41,10 @@
       loop_control:
         loop_var: role_name
       loop:
-#        - s4-hosts
         - sap-hana-preconfigure
         - redhat_sap.sap_hana_deployment
         - redhat_sap.sap_hana_hsr
-        - redhat_sap.sap_hana_ha_pacemaker
+#        - redhat_sap.sap_hana_ha_pacemaker
 
     - block:
         - name: prevent transaction log to fill up disk

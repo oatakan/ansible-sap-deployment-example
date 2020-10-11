@@ -1,0 +1,11 @@
+---
+
+- name: unregister redhat insights
+  hosts: "tag_app_sap_hana_ha_demo"
+  gather_facts: no
+
+  tasks:
+    - name: unregister redhat-insights
+      command: redhat-access-insights --unregister
+      failed_when: false
+      ignore_unreachable: yes

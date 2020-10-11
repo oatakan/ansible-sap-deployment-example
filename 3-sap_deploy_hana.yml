@@ -20,7 +20,7 @@
         - sap-hana-preconfigure
         - redhat_sap.sap_hana_deployment
         - redhat_sap.sap_hana_hsr
-        - redhat_sap.sap_hana_ha_pacemaker
+#        - redhat_sap.sap_hana_ha_pacemaker
 
     - name: prevent transaction log to fill up disk
       shell: >

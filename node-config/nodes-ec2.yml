@@ -6,6 +6,7 @@ nodes:
     pod_name: "{{ ec2_name_prefix }}"
     instance_type: m5.4xlarge
     image: "{{ ec2_ami_ids['rhel8'] | default('ami-02eac2c0129f6376b') }}" #rhel8
+    network_source_dest_check: no
     volumes:
       - device_name: /dev/sda1
         ebs:
@@ -22,6 +23,7 @@ nodes:
     pod_name: "{{ ec2_name_prefix }}"
     instance_type: m5.4xlarge
     image: "{{ ec2_ami_ids['rhel8'] | default('ami-02eac2c0129f6376b') }}" #rhel8
+    network_source_dest_check: no
     volumes:
       - device_name: /dev/sda1
         ebs:
@@ -38,6 +40,7 @@ nodes:
     pod_name: "{{ ec2_name_prefix }}"
     instance_type: m5.4xlarge
     image: "{{ ec2_ami_ids['rhel8'] | default('ami-02eac2c0129f6376b') }}" #rhel8
+    network_source_dest_check: no
     volumes:
       - device_name: /dev/sda1
         ebs:
