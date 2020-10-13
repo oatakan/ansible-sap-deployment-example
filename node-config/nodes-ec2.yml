@@ -21,7 +21,7 @@ nodes:
     role: hana
     app_name: sap_hana_ha_demo
     pod_name: "{{ ec2_name_prefix }}"
-    instance_type: m5.4xlarge
+    instance_type: m5.2xlarge
     image: "{{ ec2_ami_ids['rhel8'] | default('ami-02eac2c0129f6376b') }}" #rhel8
     network_source_dest_check: no
     volumes:
@@ -31,14 +31,14 @@ nodes:
           delete_on_termination: true
       - device_name: /dev/xvdb
         ebs:
-          volume_size: 300
+          volume_size: 320
           delete_on_termination: true
 
   - name: hana2
     role: hana
     app_name: sap_hana_ha_demo
     pod_name: "{{ ec2_name_prefix }}"
-    instance_type: m5.4xlarge
+    instance_type: m5.2xlarge
     image: "{{ ec2_ami_ids['rhel8'] | default('ami-02eac2c0129f6376b') }}" #rhel8
     network_source_dest_check: no
     volumes:
@@ -48,5 +48,5 @@ nodes:
           delete_on_termination: true
       - device_name: /dev/xvdb
         ebs:
-          volume_size: 300
+          volume_size: 320
           delete_on_termination: true
