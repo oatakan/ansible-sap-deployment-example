@@ -1,5 +1,12 @@
 ---
 
+- name: test groups
+  hosts: "tag_app_sap_hana_ha_demo:&tag_role_hana"
+  gather_facts: no
+  tasks:
+    - debug:
+        msg: "{{ sap_hana_hsr_role }}"
+
 - name: assign groups
   hosts: "tag_app_sap_hana_ha_demo:&tag_role_hana"
   gather_facts: no
