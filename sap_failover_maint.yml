@@ -33,13 +33,16 @@
   pre_tasks:
     - name: stop system replication
       shell: >
+        source /usr/sap/{{ sap_hana_deployment_hana_sid }}/home/.sapenv.sh &&
         /usr/sap/{{ sap_hana_deployment_hana_sid }}/HDB{{ sap_hana_deployment_hana_instance_number }}/exe/sapcontrol
         -nr {{ sap_hana_deployment_hana_instance_number }} -function StopSystem HDB
       args:
         chdir: /usr/sap/{{ sap_hana_deployment_hana_sid }}/HDB{{ sap_hana_deployment_hana_instance_number }}
 
     - name: unregister site
-      shell: hdbnsutil -sr_unregister --id=2
+      shell: >
+        source /usr/sap/{{ sap_hana_deployment_hana_sid }}/home/.sapenv.sh &&
+        hdbnsutil -sr_unregister --id=2
       args:
         chdir: /usr/sap/{{ sap_hana_deployment_hana_sid }}/HDB{{ sap_hana_deployment_hana_instance_number }}
 
@@ -64,6 +67,7 @@
 
     - name: re-register site after upgrade
       shell: >
+        source /usr/sap/{{ sap_hana_deployment_hana_sid }}/home/.sapenv.sh &&
         hdbnsutil -sr_register --name=hdb2
         --remoteHost={{ hana_primary_hostname }}
         --remoteInstance={{ sap_hana_deployment_hana_instance_number }}
