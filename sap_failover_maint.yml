@@ -20,7 +20,7 @@
       add_host:
         hostname: "{{ ansible_host }}"
         groups: hana_primary
-      loop: "{{ groups[tag_role_hana] }}"
+      loop: "{{ ansible_play_hosts }}"
       when: hostvars[item].sap_hana_hsr_role == 'primary'
       run_once: yes
 
@@ -28,7 +28,7 @@
       add_host:
         hostname: "{{ ansible_host }}"
         groups: hana_secondary
-      loop: "{{ groups[tag_role_hana] }}"
+      loop: "{{ ansible_play_hosts }}"
       when: hostvars[item].sap_hana_hsr_role == 'secondary'
       run_once: yes
 
