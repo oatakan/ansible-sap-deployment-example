@@ -1,0 +1,119 @@
+---
+
+- name: assign groups
+  hosts: "tag_app_sap_hana_ha_demo:&tag_role_hana"
+  gather_facts: no
+  tasks:
+    - name: create primary group
+      add_host:
+        hostname: "{{ ansible_host }}"
+        groups: hana_primary
+      when: sap_hana_hsr_role == 'primary'
+
+    - name: create secondary group
+      add_host:
+        hostname: "{{ ansible_host }}"
+        groups: hana_secondary
+      when: sap_hana_hsr_role == 'secondary'
+
+- name: set to maintenance mode
+  hosts: "tag_app_sap_hana_ha_demo:&tag_role_hana:&hana_primary"
+  gather_facts: no
+  tasks:
+    - name: set to maintenance
+      command: pcs property set maintenance-mode=true
+
+
+- name: upgrade secondary
+  hosts: "tag_app_sap_hana_ha_demo:&tag_role_hana:&hana_primary"
+  become: yes
+  become_user: "{{ sap_hana_deployment_hana_sid | lower }}adm"
+  become_method: su
+
+  pre_tasks:
+    - name: stop system replication
+      shell: sapcontrol -nr {{ sap_hana_deployment_hana_instance_number }} -function StopSystem HDB
+      args:
+        chdir: /usr/sap/{{ sap_hana_deployment_hana_sid }}/HDB{{ sap_hana_deployment_hana_instance_number }}
+
+    - name: unregister site
+      shell: hdbnsutil -sr_unregister --id=2
+      args:
+        chdir: /usr/sap/{{ sap_hana_deployment_hana_sid }}/HDB{{ sap_hana_deployment_hana_instance_number }}
+
+  roles:
+    - role: oatakan.rhel_upgrade
+      update_reboot_kernel: yes
+      become: no
+
+
+  post_tasks:
+    - name: reboot after upgrade
+      reboot:
+        reboot_timeout: "{{ reboot_timeout }}"
+      become: no
+
+    - name: set primary hostname
+      set_fact:
+        hana_primary_hostname: "{{ hostvars[groups['hana_primary'][0]]['ansible_hostname'] }}"
+
+    - debug:
+        msg: "{{ hana_primary_hostname }}"
+
+    - name: re-register site after upgrade
+      shell: >
+        hdbnsutil -sr_register --name=hdb2
+        --remoteHost={{ hana_primary_hostname }}
+        --remoteInstance={{ sap_hana_deployment_hana_instance_number }}
+        --replicationMode=syncmem
+      args:
+        chdir: /usr/sap/{{ sap_hana_deployment_hana_sid }}/HDB{{ sap_hana_deployment_hana_instance_number }}
+
+    - name: restart HANA
+      shell: HDB start
+      args:
+        chdir: /usr/sap/{{ sap_hana_deployment_hana_sid }}/HDB{{ sap_hana_deployment_hana_instance_number }}
+
+
+
+- name: upgrade primary
+  hosts: "tag_app_sap_hana_ha_demo:&tag_role_hana:&hana_primary"
+
+  pre_tasks:
+    - name: fail over to secondary
+      shell: >
+      crm_resource --move
+      --resource SAPHana_{{ sap_hana_deployment_hana_sid }}_{{ sap_hana_deployment_hana_instance_number }}-clone
+      args:
+        chdir: /usr/sap/{{ sap_hana_deployment_hana_sid }}/HDB{{ sap_hana_deployment_hana_instance_number }}
+
+  roles:
+    - role: oatakan.rhel_upgrade
+      update_reboot_kernel: yes
+
+
+  post_tasks:
+    - name: reboot after upgrade
+      reboot:
+        reboot_timeout: "{{ reboot_timeout }}"
+
+    - name: set secondary hostname
+      set_fact:
+        hana_secondary_hostname: "{{ hostvars[groups['hana_secondary'][0]]['ansible_hostname'] }}"
+
+    - debug:
+        msg: "{{ hana_secondary_hostname }}"
+
+#    - name: re-register site after upgrade
+#      shell: >
+#        hdbnsutil -sr_register --name=hdb2
+#        --remoteHost={{ hana_primary_hostname }}
+#        --remoteInstance={{ sap_hana_deployment_hana_instance_number }}
+#        --replicationMode=syncmem
+#      args:
+#        chdir: /usr/sap/{{ sap_hana_deployment_hana_sid }}/HDB{{ sap_hana_deployment_hana_instance_number }}
+#
+#    - name: restart HANA
+#      shell: HDB start
+#      args:
+#        chdir: /usr/sap/{{ sap_hana_deployment_hana_sid }}/HDB{{ sap_hana_deployment_hana_instance_number }}
