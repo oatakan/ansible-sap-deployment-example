@@ -21,12 +21,14 @@
         hostname: "{{ ansible_host }}"
         groups: hana_primary
       when: sap_hana_hsr_role == 'primary'
+      run_once: no
 
     - name: create secondary group
       add_host:
         hostname: "{{ ansible_host }}"
         groups: hana_secondary
       when: sap_hana_hsr_role == 'secondary'
+      run_once: no
 
 - name: set to maintenance mode
   hosts: "tag_app_sap_hana_ha_demo:&tag_role_hana:&hana_primary"
