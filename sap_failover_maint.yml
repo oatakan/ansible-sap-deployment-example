@@ -32,7 +32,7 @@
 
 
 - name: upgrade secondary
-  hosts: "tag_app_sap_hana_ha_demo:&tag_role_hana:&hana_primary"
+  hosts: "tag_app_sap_hana_ha_demo:&tag_role_hana:&hana_secondary"
   become: yes
   become_user: "{{ sap_hana_deployment_hana_sid | lower }}adm"
   #become_method: su
