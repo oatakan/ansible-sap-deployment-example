@@ -18,19 +18,15 @@
   tasks:
     - name: create primary group
       add_host:
-        hostname: "{{ ansible_host }}"
+        hostname: "{{ inventory_hostname }}"
         groups: hana_primary
-      loop: "{{ ansible_play_hosts }}"
-      when: hostvars[item].sap_hana_hsr_role == 'primary'
-      run_once: yes
+      when: ansible_play_hosts.index(inventory_hostname) == 0
 
     - name: create secondary group
       add_host:
-        hostname: "{{ ansible_host }}"
+        hostname: "{{ inventory_hostname }}"
         groups: hana_secondary
-      loop: "{{ ansible_play_hosts }}"
-      when: hostvars[item].sap_hana_hsr_role == 'secondary'
-      run_once: yes
+      when: ansible_play_hosts.index(inventory_hostname) == 1
 
 - name: set to maintenance mode
   hosts: "tag_app_sap_hana_ha_demo:&tag_role_hana:&hana_primary"
