@@ -6,6 +6,11 @@
   tasks:
     - debug:
         msg: "{{ sap_hana_hsr_role }}"
+      when: sap_hana_hsr_role == 'primary'
+
+    - debug:
+        msg: "{{ sap_hana_hsr_role }}"
+      when: sap_hana_hsr_role == 'secondary'
 
 - name: assign groups
   hosts: "tag_app_sap_hana_ha_demo:&tag_role_hana"
