@@ -12,7 +12,7 @@
 
 - name: preconfigure hana and deploy hana
   hosts: "tag_app_sap_hana_ha_demo:&tag_role_hana"
-  become_method: su
+#  become_method: su
 
   tasks:
     # this a temporary measure before implementing real vip
@@ -54,7 +54,7 @@
             "ALTER SYSTEM ALTER CONFIGURATION ('global.ini', 'SYSTEM') SET ('persistence', 'log_mode') = 'overwrite' WITH RECONFIGURE";
           become: yes
           become_user: "{{ sap_hana_deployment_hana_sid | lower }}adm"
-          become_method: su
+#          become_method: su
           register: db_overwrite_cmd
           failed_when: false
 
@@ -76,7 +76,7 @@
 
 - name: hana pacemaker
   hosts: "tag_app_sap_hana_ha_demo:&tag_role_hana"
-  become_method: su
+#  become_method: su
   vars:
     # this a temporary measure before implementing real vip
     sap_hana_ha_pacemaker_vip: "{{ hostvars['hana_primary']['ip_address'] }}"
