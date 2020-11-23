@@ -45,22 +45,22 @@
         - redhat_sap.sap_hana_deployment
         - redhat_sap.sap_hana_hsr
 
-    - block:
-        - name: prevent transaction log to fill up disk
-          shell: >
-            /usr/sap/{{ sap_hana_deployment_hana_sid }}/HDB{{ sap_hana_deployment_hana_instance_number }}/exe/hdbsql
-            -n {{ ansible_hostname }} -i {{ sap_hana_deployment_hana_instance_number }}
-            -u SYSTEM -p {{ sap_hana_deployment_hana_db_system_password }}
-            "ALTER SYSTEM ALTER CONFIGURATION ('global.ini', 'SYSTEM') SET ('persistence', 'log_mode') = 'overwrite' WITH RECONFIGURE";
-          become: yes
-          become_user: "{{ sap_hana_deployment_hana_sid | lower }}adm"
-          become_method: su
-          register: db_overwrite_cmd
-          failed_when: false
-
-        - debug:
-            msg: "{{ db_overwrite_cmd }}"
-      when: sap_hana_hsr_role == 'primary'
+#    - block:
+#        - name: prevent transaction log to fill up disk
+#          shell: >
+#            /usr/sap/{{ sap_hana_deployment_hana_sid }}/HDB{{ sap_hana_deployment_hana_instance_number }}/exe/hdbsql
+#            -n {{ ansible_hostname }} -i {{ sap_hana_deployment_hana_instance_number }}
+#            -u SYSTEM -p {{ sap_hana_deployment_hana_db_system_password }}
+#            "ALTER SYSTEM ALTER CONFIGURATION ('global.ini', 'SYSTEM') SET ('persistence', 'log_mode') = 'overwrite' WITH RECONFIGURE";
+#          become: yes
+#          become_user: "{{ sap_hana_deployment_hana_sid | lower }}adm"
+#          become_method: su
+#          register: db_overwrite_cmd
+#          failed_when: false
+#
+#        - debug:
+#            msg: "{{ db_overwrite_cmd }}"
+#      when: sap_hana_hsr_role == 'primary'
 
 - name: preconfigure netweaver and install s4 app
   hosts: "tag_app_sap_hana_ha_demo:&tag_role_s4app"
@@ -83,3 +83,19 @@
 
   roles:
     - redhat_sap.sap_hana_ha_pacemaker
+
+#  post_tasks:
+#    - name: ensure backup exists
+#      shell: >
+#        source /usr/sap/RHE/home/.sapenv.sh &&
+#        /usr/sap/{{ sap_hana_deployment_hana_sid }}/HDB{{ sap_hana_deployment_hana_instance_number }}/exe/hdbsql
+#        -i {{ sap_hana_deployment_hana_instance_number }}
+#        -u SYSTEM -p {{ sap_hana_deployment_hana_db_system_password }}
+#        -d SYSTEMDB
+#        "BACKUP DATA FOR {{ sap_hana_deployment_hana_sid }} USING FILE ('data_bck')"
+#      become: yes
+#      become_user: "{{ sap_hana_deployment_hana_sid | lower }}adm"
+#      become_method: su
+#      register: db_overwrite_cmd
+#      failed_when: false
+#      when: sap_hana_hsr_role == 'primary'

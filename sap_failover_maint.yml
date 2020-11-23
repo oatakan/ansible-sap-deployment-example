@@ -2,7 +2,7 @@
 
 - name: assign groups
   hosts: "tag_app_sap_hana_ha_demo:&tag_role_hana"
-  gather_facts: no
+  gather_facts: yes
   tasks:
     - name: find hana role
       shell: >
@@ -15,7 +15,7 @@
     - name: set mode and index
       set_fact:
         pcs_mode: "{{ (find_hana_role.stdout_lines | select('match', '^mode: (.*)$') | list)[0] | regex_replace('^mode: (.*)$', '\\1') }}"
-        pcs_site_id: "{{ (find_hana_role.stdout_lines | select('match', '^site id: (.*)$') | list)[0] | regex_replace('^site id: (.*)$', '\\1') }}"
+        pcs_site_id: "{{ (find_hana_role.stdout_lines | select('match', '^site id: (.*)$') | list)[0] | default('') | regex_replace('^site id: (.*)$', '\\1') }}"
 
     - name: set hana role
       set_fact:
@@ -24,10 +24,33 @@
     - name: create groups
       add_host:
         hostname: "{{ item }}"
+        ansible_hostname: "{{ hostvars[item].ansible_hostname }}"
         groups: hana_{{ hostvars[item].pcs_role }}
         sap_hana_role: "{{ hostvars[item].pcs_role }}"
         sap_hana_site_id: "{{ hostvars[item].pcs_site_id }}"
       loop: "{{ ansible_play_hosts }}"
+
+
+#- name: replication status (primary)
+#  hosts: "tag_app_sap_hana_ha_demo:&tag_role_hana:&hana_primary"
+#  gather_facts: no
+#  become: yes
+#  become_user: "{{ sap_hana_deployment_hana_sid | lower }}adm"
+#  become_method: su
+#  tasks:
+#    - name: ensure replication status is ACTIVE
+#      shell: >
+#        source /usr/sap/{{ sap_hana_deployment_hana_sid }}/home/.sapenv.sh &&
+#        python /usr/sap/{{ sap_hana_deployment_hana_sid }}/HDB{{ sap_hana_deployment_hana_instance_number }}/exe/python_support/systemReplicationStatus.py
+#        | grep '^overall system replication' | cut -d':' -f2 | awk '{$1=$1};1'
+#      args:
+#        chdir: /usr/sap/{{ sap_hana_deployment_hana_sid }}/HDB{{ sap_hana_deployment_hana_instance_number }}
+#      register: replication_status
+#
+#    - name: fail when replication status is not ACTIVE
+#      fail:
+#        msg: "replication status is not ACTIVE"
+#      when: (replication_status.stdout != 'ACTIVE')
 
 - name: set to maintenance mode (secondary)
   hosts: "tag_app_sap_hana_ha_demo:&tag_role_hana:&hana_secondary"
@@ -56,10 +79,11 @@
     - name: unregister site
       shell: >
         source /usr/sap/{{ sap_hana_deployment_hana_sid }}/home/.sapenv.sh &&
-        hdbnsutil -sr_unregister --id={{ hostvars[groups['hana_secondary'][0]].sap_hana_site_id }}
+        hdbnsutil -sr_unregister --id={{ sap_hana_site_id }}
       args:
         chdir: /usr/sap/{{ sap_hana_deployment_hana_sid }}/HDB{{ sap_hana_deployment_hana_instance_number }}
       register: unregister_site
+      when: sap_hana_site_id != ''
       failed_when:
         - unregister_site.rc > 0
         - ('this system is not a system replication site' not in unregister_site.stdout)
@@ -71,7 +95,9 @@
       args:
         chdir: /usr/sap/{{ sap_hana_deployment_hana_sid }}/HDB{{ sap_hana_deployment_hana_instance_number }}
       register: hdb_start
-      when: unregister_site.rc == 0
+      when:
+        - sap_hana_site_id != ''
+        - unregister_site.rc == 0
       failed_when:
         - hdb_start.rc > 0
         - ('process hdbdaemon HDB Daemon not running' not in hdb_start.stdout)
@@ -95,11 +121,11 @@
     - name: re-register site after upgrade
       shell: >
         source /usr/sap/{{ sap_hana_deployment_hana_sid }}/home/.sapenv.sh &&
-        hdbnsutil -sr_register --name=hdb{{ sap_hana_site_id }}
+        hdbnsutil -sr_register --name=hdb{{ sap_hana_site_id | default(((hostvars[groups['hana_primary'][0]]['sap_hana_site_id']) | int)+1) | string }}
         --remoteHost={{ hana_primary_hostname }}
         --remoteInstance={{ sap_hana_deployment_hana_instance_number }}
         --replicationMode=syncmem
-#        --online
+        --online
       args:
         chdir: /usr/sap/{{ sap_hana_deployment_hana_sid }}/HDB{{ sap_hana_deployment_hana_instance_number }}
       become: yes
@@ -188,6 +214,65 @@
         pcs resource clear
         SAPHana_{{ sap_hana_deployment_hana_sid }}_{{ sap_hana_deployment_hana_instance_number }}-clone
 
+#    - name: wait until system replication status is active
+#      shell: >
+#        source /usr/sap/{{ sap_hana_deployment_hana_sid }}/home/.sapenv.sh &&
+#        python /usr/sap/{{ sap_hana_deployment_hana_sid }}/HDB{{ sap_hana_deployment_hana_instance_number }}/exe/python_support/systemReplicationStatus.py
+#        | grep '^overall system replication' | cut -d':' -f2 | awk '{$1=$1};1'
+#      args:
+#        chdir: /usr/sap/{{ sap_hana_deployment_hana_sid }}/HDB{{ sap_hana_deployment_hana_instance_number }}/exe/python_support
+#      register: wait_sys_replication
+#      until: wait_sys_replication.stdout == 'ACTIVE'
+#      retries: 100
+#      delay: 10
+#      failed_when: false
+#      become: yes
+#      become_user: "{{ sap_hana_deployment_hana_sid | lower }}adm"
+
+- name: upgrade (primary)
+  hosts: "tag_app_sap_hana_ha_demo:&tag_role_hana:&hana_primary"
+
+  roles:
+    - role: oatakan.rhel_upgrade
+      update_reboot_kernel: yes
+      become: no
+
+  post_tasks:
+    - name: set primary hostname
+      set_fact:
+        hana_primary_hostname: "{{ hostvars[groups['hana_secondary'][0]]['ansible_hostname'] }}"
+
+    - debug:
+        msg: "{{ hana_primary_hostname }}"
+
+    - name: re-register site after upgrade
+      shell: >
+        source /usr/sap/{{ sap_hana_deployment_hana_sid }}/home/.sapenv.sh &&
+        hdbnsutil -sr_register --name=hdb{{ sap_hana_site_id | default(((hostvars[groups['hana_primary'][0]]['sap_hana_site_id']) | int)+1) | string }}
+        --remoteHost={{ hana_primary_hostname }}
+        --remoteInstance={{ sap_hana_deployment_hana_instance_number }}
+        --replicationMode=syncmem
+        --online
+      args:
+        chdir: /usr/sap/{{ sap_hana_deployment_hana_sid }}/HDB{{ sap_hana_deployment_hana_instance_number }}
+      become: yes
+      become_user: "{{ sap_hana_deployment_hana_sid | lower }}adm"
+
+    - name: HDB start
+      shell: >
+        source /usr/sap/{{ sap_hana_deployment_hana_sid }}/home/.sapenv.sh &&
+        HDB start
+      args:
+        chdir: /usr/sap/{{ sap_hana_deployment_hana_sid }}/HDB{{ sap_hana_deployment_hana_instance_number }}
+      become: yes
+      become_user: "{{ sap_hana_deployment_hana_sid | lower }}adm"
+
+- name: wait for system replication (secondary)
+  hosts: "tag_app_sap_hana_ha_demo:&tag_role_hana:&hana_secondary"
+  become: yes
+  become_user: "{{ sap_hana_deployment_hana_sid | lower }}adm"
+
+  tasks:
     - name: wait until system replication status is active
       shell: >
         source /usr/sap/{{ sap_hana_deployment_hana_sid }}/home/.sapenv.sh &&
@@ -200,5 +285,3 @@
       retries: 100
       delay: 10
       failed_when: false
-      become: yes
-      become_user: "{{ sap_hana_deployment_hana_sid | lower }}adm"
