@@ -125,7 +125,8 @@
         --remoteHost={{ hana_primary_hostname }}
         --remoteInstance={{ sap_hana_deployment_hana_instance_number }}
         --replicationMode=syncmem
-        --online
+        --operationMode=normal
+#        --online
       args:
         chdir: /usr/sap/{{ sap_hana_deployment_hana_sid }}/HDB{{ sap_hana_deployment_hana_instance_number }}
       become: yes
