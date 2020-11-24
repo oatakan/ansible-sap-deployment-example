@@ -35,9 +35,9 @@
     - include_role:
         name: "{{ role_name }}"
       when: (not hana_installation_check.stat.exists) | default(True)
-      vars:
-        # this a temporary measure before implementing real vip
-        sap_hana_vip: "{{ hostvars['hana_primary']['ip_address'] }}"
+#      vars:
+#        # this a temporary measure before implementing real vip
+#        sap_hana_vip: "{{ hostvars['hana_primary']['ip_address'] }}"
       loop_control:
         loop_var: role_name
       loop:
