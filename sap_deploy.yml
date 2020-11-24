@@ -115,8 +115,4 @@
           become_method: su
           register: db_overwrite_cmd
           failed_when: false
-
-        - name: delete vip
-          command: pcs resource delete vip_{{ sap_hana_deployment_hana_sid }}_{{ sap_hana_deployment_hana_instance_number }}
-
       when: sap_hana_hsr_role == 'primary'

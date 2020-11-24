@@ -183,8 +183,8 @@
   hosts: "tag_app_sap_hana_ha_demo:&tag_role_hana:&hana_secondary"
 
   tasks:
-#    - name: delete vip
-#      command: pcs resource delete vip_{{ sap_hana_deployment_hana_sid }}_{{ sap_hana_deployment_hana_instance_number }}
+    - name: delete vip
+      command: pcs resource delete vip_{{ sap_hana_deployment_hana_sid }}_{{ sap_hana_deployment_hana_instance_number }}
 
     - name: set maintenance off
       command: pcs property set maintenance-mode=false
