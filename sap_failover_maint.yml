@@ -87,6 +87,11 @@
       failed_when:
         - unregister_site.rc > 0
         - ('this system is not a system replication site' not in unregister_site.stdout)
+      until: unregister_site is success
+      retries: 10
+      delay: 5
+
+    - pause:
 
     - name: HDB start
       shell: >
@@ -101,6 +106,8 @@
       failed_when:
         - hdb_start.rc > 0
         - ('process hdbdaemon HDB Daemon not running' not in hdb_start.stdout)
+
+    - pause:
 
 - name: upgrade (secondary)
   hosts: "tag_app_sap_hana_ha_demo:&tag_role_hana:&hana_secondary"
@@ -125,12 +132,29 @@
         --remoteHost={{ hana_primary_hostname }}
         --remoteInstance={{ sap_hana_deployment_hana_instance_number }}
         --replicationMode=syncmem
-#        --online
       args:
         chdir: /usr/sap/{{ sap_hana_deployment_hana_sid }}/HDB{{ sap_hana_deployment_hana_instance_number }}
+      register: reregister_site
       become: yes
       become_user: "{{ sap_hana_deployment_hana_sid | lower }}adm"
       ignore_errors: yes
+
+    - name: re-register site after upgrade online mode
+      shell: >
+        source /usr/sap/{{ sap_hana_deployment_hana_sid }}/home/.sapenv.sh &&
+        hdbnsutil -sr_register --name=hdb{{ sap_hana_site_id | default(((hostvars[groups['hana_primary'][0]]['sap_hana_site_id']) | int)+1) | string }}
+        --remoteHost={{ hana_primary_hostname }}
+        --remoteInstance={{ sap_hana_deployment_hana_instance_number }}
+        --replicationMode=syncmem
+        --online
+      args:
+        chdir: /usr/sap/{{ sap_hana_deployment_hana_sid }}/HDB{{ sap_hana_deployment_hana_instance_number }}
+      when: ('system must be shut down' in reregister_site.stdout)
+      become: yes
+      become_user: "{{ sap_hana_deployment_hana_sid | lower }}adm"
+      ignore_errors: yes
+
+    - pause:
 
     - name: HDB start
       shell: >
@@ -183,8 +207,12 @@
   hosts: "tag_app_sap_hana_ha_demo:&tag_role_hana:&hana_secondary"
 
   tasks:
-    - name: delete vip
-      command: pcs resource delete vip_{{ sap_hana_deployment_hana_sid }}_{{ sap_hana_deployment_hana_instance_number }}
+    - pause:
+
+    - name: update vip
+      command: pcs resource update vip_{{ sap_hana_deployment_hana_sid }}_{{ sap_hana_deployment_hana_instance_number }} IPaddr2 ip="{{ ansible_default_ipv4.address }}"
+
+    - pause:
 
     - name: set maintenance off
       command: pcs property set maintenance-mode=false
@@ -198,8 +226,10 @@
 
 #    - name: re-add vip
 #      shell: >
-#        pcs resource delete vip_{{ sap_hana_deployment_hana_sid }}_{{ sap_hana_deployment_hana_instance_number }}
+#        pcs resource create vip_{{ sap_hana_deployment_hana_sid }}_{{ sap_hana_deployment_hana_instance_number }}
 #        IPaddr2 ip="{{ ansible_default_ipv4.address }}"
+
+    - pause:
 
     - name: wait for status
       shell: >
@@ -243,6 +273,8 @@
 - name: upgrade (primary)
   hosts: "tag_app_sap_hana_ha_demo:&tag_role_hana:&hana_primary"
   pre_tasks:
+    - pause:
+
     - name: set to maintenance
       command: pcs property set maintenance-mode=true
 
@@ -266,6 +298,11 @@
       failed_when:
         - unregister_site.rc > 0
         - ('this system is not a system replication site' not in unregister_site.stdout)
+      until: unregister_site is success
+      retries: 10
+      delay: 5
+
+    - pause:
 
     - name: HDB start
       shell: >
@@ -301,11 +338,28 @@
         --remoteHost={{ hana_primary_hostname }}
         --remoteInstance={{ sap_hana_deployment_hana_instance_number }}
         --replicationMode=syncmem
-#        --online
       args:
         chdir: /usr/sap/{{ sap_hana_deployment_hana_sid }}/HDB{{ sap_hana_deployment_hana_instance_number }}
+      register: reregister_site
       become: yes
       become_user: "{{ sap_hana_deployment_hana_sid | lower }}adm"
+      ignore_errors: yes
+
+    - name: re-register site after upgrade online
+      shell: >
+        source /usr/sap/{{ sap_hana_deployment_hana_sid }}/home/.sapenv.sh &&
+        hdbnsutil -sr_register --name=hdb{{ sap_hana_site_id | default(((hostvars[groups['hana_primary'][0]]['sap_hana_site_id']) | int)+1) | string }}
+        --remoteHost={{ hana_primary_hostname }}
+        --remoteInstance={{ sap_hana_deployment_hana_instance_number }}
+        --replicationMode=syncmem
+        --online
+      args:
+        chdir: /usr/sap/{{ sap_hana_deployment_hana_sid }}/HDB{{ sap_hana_deployment_hana_instance_number }}
+      when: ('system must be shut down' in reregister_site.stdout)
+      become: yes
+      become_user: "{{ sap_hana_deployment_hana_sid | lower }}adm"
+
+    - pause:
 
     - name: HDB start
       shell: >

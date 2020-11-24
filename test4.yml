@@ -1,0 +1,56 @@
+- name: assign groups
+  hosts: "tag_app_sap_hana_ha_demo:&tag_role_hana"
+  gather_facts: no
+  tasks:
+    - name: find hana role
+      shell: >
+        source /usr/sap/{{ sap_hana_deployment_hana_sid }}/home/.sapenv.sh &&
+        hdbnsutil -sr_state
+      become: yes
+      become_user: "{{ sap_hana_deployment_hana_sid | lower }}adm"
+      register: find_hana_role
+
+    - name: set mode and index
+      set_fact:
+        pcs_mode: "{{ (find_hana_role.stdout_lines | select('match', '^mode: (.*)$') | list)[0] | regex_replace('^mode: (.*)$', '\\1') }}"
+        pcs_site_id: "{{ (find_hana_role.stdout_lines | select('match', '^site id: (.*)$') | list)[0] | regex_replace('^site id: (.*)$', '\\1') }}"
+
+    - name: set hana role
+      set_fact:
+        pcs_role: "{{ 'primary' if (pcs_mode == 'primary') else 'secondary' }}"
+
+    - name: create groups
+      add_host:
+        hostname: "{{ item }}"
+        groups: hana_{{ hostvars[item].pcs_role }}
+        sap_hana_role: "{{ hostvars[item].pcs_role }}"
+        sap_hana_site_id: "{{ hostvars[item].pcs_site_id }}"
+      loop: "{{ ansible_play_hosts }}"
+
+- name: run on primary
+  hosts: "tag_app_sap_hana_ha_demo:&tag_role_hana:&hana_primary"
+  tasks:
+    - debug:
+        msg: "{{ sap_hana_site_id }}"
+
+    - name: prevent transaction log to fill up disk
+      shell: >
+        /usr/sap/{{ sap_hana_deployment_hana_sid }}/HDB{{ sap_hana_deployment_hana_instance_number }}/exe/hdbsql
+        -n {{ ansible_hostname }} -i {{ sap_hana_deployment_hana_instance_number }}
+        -u SYSTEM -p {{ sap_hana_deployment_hana_db_system_password }}
+        "ALTER SYSTEM ALTER CONFIGURATION ('global.ini', 'SYSTEM') SET ('persistence', 'log_mode') = 'overwrite' WITH RECONFIGURE";
+      become: yes
+      become_user: "{{ sap_hana_deployment_hana_sid | lower }}adm"
+      register: db_overwrite_cmd
+      failed_when: false
+
+    - debug:
+        msg: "{{ db_overwrite_cmd }}"
+      when: sap_hana_hsr_role == 'primary'
+
+- name: run on secondary
+  hosts: "tag_app_sap_hana_ha_demo:&tag_role_hana:&hana_secondary"
+  gather_facts: no
+  tasks:
+    - debug:
+        msg: "{{ sap_hana_site_id }}"
