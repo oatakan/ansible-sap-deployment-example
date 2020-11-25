@@ -87,11 +87,10 @@
       failed_when:
         - unregister_site.rc > 0
         - ('this system is not a system replication site' not in unregister_site.stdout)
+        - ('system must be running' not in unregister_site.stdout)
       until: unregister_site is success
       retries: 10
       delay: 5
-
-    - pause:
 
     - name: HDB start
       shell: >
@@ -106,8 +105,6 @@
       failed_when:
         - hdb_start.rc > 0
         - ('process hdbdaemon HDB Daemon not running' not in hdb_start.stdout)
-
-    - pause:
 
 - name: upgrade (secondary)
   hosts: "tag_app_sap_hana_ha_demo:&tag_role_hana:&hana_secondary"
@@ -154,8 +151,6 @@
       become_user: "{{ sap_hana_deployment_hana_sid | lower }}adm"
       ignore_errors: yes
 
-    - pause:
-
     - name: HDB start
       shell: >
         source /usr/sap/{{ sap_hana_deployment_hana_sid }}/home/.sapenv.sh &&
@@ -182,7 +177,7 @@
         chdir: /usr/sap/{{ sap_hana_deployment_hana_sid }}/HDB{{ sap_hana_deployment_hana_instance_number }}/exe/python_support
       register: wait_sys_replication
       until: wait_sys_replication.stdout == 'ACTIVE'
-      retries: 100
+      retries: 300
       delay: 10
       failed_when: false
 
@@ -207,12 +202,8 @@
   hosts: "tag_app_sap_hana_ha_demo:&tag_role_hana:&hana_secondary"
 
   tasks:
-    - pause:
-
-    - name: update vip
-      command: pcs resource update vip_{{ sap_hana_deployment_hana_sid }}_{{ sap_hana_deployment_hana_instance_number }} IPaddr2 ip="{{ ansible_default_ipv4.address }}"
-
-    - pause:
+#    - name: update vip
+#      command: pcs resource update vip_{{ sap_hana_deployment_hana_sid }}_{{ sap_hana_deployment_hana_instance_number }} IPaddr2 ip="{{ ansible_default_ipv4.address }}"
 
     - name: set maintenance off
       command: pcs property set maintenance-mode=false
@@ -228,8 +219,6 @@
 #      shell: >
 #        pcs resource create vip_{{ sap_hana_deployment_hana_sid }}_{{ sap_hana_deployment_hana_instance_number }}
 #        IPaddr2 ip="{{ ansible_default_ipv4.address }}"
-
-    - pause:
 
     - name: wait for status
       shell: >
@@ -264,7 +253,7 @@
 #        chdir: /usr/sap/{{ sap_hana_deployment_hana_sid }}/HDB{{ sap_hana_deployment_hana_instance_number }}/exe/python_support
 #      register: wait_sys_replication
 #      until: wait_sys_replication.stdout == 'ACTIVE'
-#      retries: 100
+#      retries: 300
 #      delay: 10
 #      failed_when: false
 #      become: yes
@@ -273,8 +262,6 @@
 - name: upgrade (primary)
   hosts: "tag_app_sap_hana_ha_demo:&tag_role_hana:&hana_primary"
   pre_tasks:
-    - pause:
-
     - name: set to maintenance
       command: pcs property set maintenance-mode=true
 
@@ -298,11 +285,10 @@
       failed_when:
         - unregister_site.rc > 0
         - ('this system is not a system replication site' not in unregister_site.stdout)
+        - ('system must be running' not in unregister_site.stdout)
       until: unregister_site is success
       retries: 10
       delay: 5
-
-    - pause:
 
     - name: HDB start
       shell: >
@@ -359,8 +345,6 @@
       become: yes
       become_user: "{{ sap_hana_deployment_hana_sid | lower }}adm"
 
-    - pause:
-
     - name: HDB start
       shell: >
         source /usr/sap/{{ sap_hana_deployment_hana_sid }}/home/.sapenv.sh &&
@@ -385,6 +369,6 @@
         chdir: /usr/sap/{{ sap_hana_deployment_hana_sid }}/HDB{{ sap_hana_deployment_hana_instance_number }}/exe/python_support
       register: wait_sys_replication
       until: wait_sys_replication.stdout == 'ACTIVE'
-      retries: 100
+      retries: 300
       delay: 10
       failed_when: false

@@ -28,7 +28,6 @@ nodes:
     network_source_dest_check: no
     networks:
       - ip: 10.10.10.102
-      - ip: 10.10.10.100
     volumes:
       - device_name: /dev/sda1
         ebs:
@@ -48,6 +47,7 @@ nodes:
     network_source_dest_check: no
     networks:
       - ip: 10.10.10.103
+      - ip: 10.10.10.100
     volumes:
       - device_name: /dev/sda1
         ebs:
