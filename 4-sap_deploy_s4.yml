@@ -2,7 +2,6 @@
 
 - name: preconfigure hana and deploy hana
   hosts: "tag_app_sap_hana_ha_demo:&tag_role_hana"
-  become_method: su
 
   tasks:
      # this a temporary measure before implementing real vip
@@ -26,3 +25,46 @@
   roles:
     - s4-hosts
     - sap_s4hana_deployment
+
+- name: hana pacemaker
+  hosts: "tag_app_sap_hana_ha_demo:&tag_role_hana"
+  become_method: su
+#  vars:
+#    # this a temporary measure before implementing real vip
+#    sap_hana_ha_pacemaker_vip: "{{ hostvars['hana_primary']['ip_address'] }}"
+
+  roles:
+    - redhat_sap.sap_hana_ha_pacemaker
+
+  post_tasks:
+    - block:
+        - name: set to normal mode
+          shell: >
+            source /usr/sap/RHE/home/.sapenv.sh &&
+            /usr/sap/{{ sap_hana_deployment_hana_sid }}/HDB{{ sap_hana_deployment_hana_instance_number }}/exe/hdbsql
+            -n {{ ansible_hostname }} -i {{ sap_hana_deployment_hana_instance_number }}
+            -u SYSTEM -p {{ sap_hana_deployment_hana_db_system_password }}
+            "ALTER SYSTEM ALTER CONFIGURATION ('global.ini', 'SYSTEM') SET ('persistence', 'normal') = 'overwrite' WITH RECONFIGURE";
+          become: yes
+          become_user: "{{ sap_hana_deployment_hana_sid | lower }}adm"
+          become_method: su
+          register: db_overwrite_cmd
+          failed_when: false
+
+        - debug:
+            msg: "{{ db_overwrite_cmd }}"
+
+        - name: ensure backup exists
+          shell: >
+            source /usr/sap/RHE/home/.sapenv.sh &&
+            /usr/sap/{{ sap_hana_deployment_hana_sid }}/HDB{{ sap_hana_deployment_hana_instance_number }}/exe/hdbsql
+            -i {{ sap_hana_deployment_hana_instance_number }}
+            -u SYSTEM -p {{ sap_hana_deployment_hana_db_system_password }}
+            -d SYSTEMDB
+            "BACKUP DATA FOR {{ sap_hana_deployment_hana_sid }} USING FILE ('data_bck')"
+          become: yes
+          become_user: "{{ sap_hana_deployment_hana_sid | lower }}adm"
+          become_method: su
+          register: db_overwrite_cmd
+          failed_when: false
+      when: sap_hana_hsr_role == 'primary'
