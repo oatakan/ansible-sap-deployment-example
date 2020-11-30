@@ -56,6 +56,9 @@
       become: yes
       become_user: "{{ sap_hana_deployment_hana_sid | lower }}adm"
 
+    - pause:
+        seconds: 5
+
     - name: pcs restore
       command: >
         pcs resource clear

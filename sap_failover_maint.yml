@@ -116,9 +116,6 @@
       become: no
 
   post_tasks:
-    - name: reboot system anyway
-      reboot:
-
     - name: set primary hostname
       set_fact:
         hana_primary_hostname: "{{ hostvars[groups['hana_primary'][0]]['ansible_hostname'] }}"
@@ -154,6 +151,9 @@
       become: yes
       become_user: "{{ sap_hana_deployment_hana_sid | lower }}adm"
       ignore_errors: yes
+
+    - name: reboot system
+      reboot:
 
     - name: HDB start
       shell: >
@@ -206,16 +206,13 @@
   hosts: "tag_app_sap_hana_ha_demo:&tag_role_hana:&hana_secondary"
 
   tasks:
-    - pause:
-        seconds: 30
-
     - name: set maintenance off
       command: pcs property set maintenance-mode=false
 
-    - name: pcs restore
-      command: >
-        pcs resource clear
-        SAPHana_{{ sap_hana_deployment_hana_sid }}_{{ sap_hana_deployment_hana_instance_number }}-clone
+#    - name: pcs restore
+#      command: >
+#        pcs resource clear
+#        SAPHana_{{ sap_hana_deployment_hana_sid }}_{{ sap_hana_deployment_hana_instance_number }}-clone
 
     - name: fail over to secondary
       command: >
@@ -234,6 +231,9 @@
       delay: 30
       become: yes
       become_user: "{{ sap_hana_deployment_hana_sid | lower }}adm"
+
+    - pause:
+        seconds: 5
 
     - name: pcs restore
       command: >
@@ -306,9 +306,6 @@
       become: no
 
   post_tasks:
-    - name: reboot system anyway
-      reboot:
-
     - name: set primary hostname
       set_fact:
         hana_primary_hostname: "{{ hostvars[groups['hana_secondary'][0]]['ansible_hostname'] }}"
@@ -343,6 +340,9 @@
       when: ('system must be shut down' in reregister_site.stdout)
       become: yes
       become_user: "{{ sap_hana_deployment_hana_sid | lower }}adm"
+
+    - name: reboot system
+      reboot:
 
     - name: HDB start
       shell: >
