@@ -1,7 +1,7 @@
 ---
 
 - name: RHN register
-  hosts: all
+  hosts: "tag_app_sap_hana_ha_demo"
 
   pre_tasks:
 

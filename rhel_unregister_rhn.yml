@@ -1,7 +1,13 @@
 ---
 
 - name: RHN unregister
-  hosts: all
+  hosts: "tag_app_sap_hana_ha_demo"
+
+  pre_tasks:
+    - name: unregister redhat-insights
+      command: redhat-access-insights --unregister
+      failed_when: false
+      ignore_unreachable: yes
 
   roles:
     - role: oatakan.rhn
