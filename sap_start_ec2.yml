@@ -9,7 +9,7 @@
           "tag:app": sap_hana_ha_demo
       register: ec2_instances
 
-    - name: stop instances
+    - name: start instances
       ec2_instance:
         region: "{{ ec2_region }}"
         state: "started"
