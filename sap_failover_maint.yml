@@ -213,6 +213,8 @@
 #      command: >
 #        pcs resource clear
 #        SAPHana_{{ sap_hana_deployment_hana_sid }}_{{ sap_hana_deployment_hana_instance_number }}-clone
+    - pause:
+        seconds: 30
 
     - name: fail over to secondary
       command: >
@@ -232,8 +234,13 @@
       become: yes
       become_user: "{{ sap_hana_deployment_hana_sid | lower }}adm"
 
-    - pause:
-        seconds: 5
+    - name: wait for clone set
+      shell: pcs status | grep "FAILED Master {{ ansible_fqdn }}"
+      register: wait_for_clone_set
+      until: wait_for_clone_set is success
+      ignore_errors: yes
+      retries: 10
+      delay: 3
 
     - name: pcs restore
       command: >
@@ -276,6 +283,8 @@
         hdbnsutil -sr_unregister --id={{ sap_hana_site_id }}
       args:
         chdir: /usr/sap/{{ sap_hana_deployment_hana_sid }}/HDB{{ sap_hana_deployment_hana_instance_number }}
+      become: yes
+      become_user: "{{ sap_hana_deployment_hana_sid | lower }}adm"
       register: unregister_site
       when: sap_hana_site_id != ''
       failed_when:
@@ -292,6 +301,8 @@
         HDB start
       args:
         chdir: /usr/sap/{{ sap_hana_deployment_hana_sid }}/HDB{{ sap_hana_deployment_hana_instance_number }}
+      become: yes
+      become_user: "{{ sap_hana_deployment_hana_sid | lower }}adm"
       register: hdb_start
       when:
         - sap_hana_site_id != ''
