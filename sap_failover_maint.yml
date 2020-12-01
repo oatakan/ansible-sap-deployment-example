@@ -209,10 +209,6 @@
     - name: set maintenance off
       command: pcs property set maintenance-mode=false
 
-#    - name: pcs restore
-#      command: >
-#        pcs resource clear
-#        SAPHana_{{ sap_hana_deployment_hana_sid }}_{{ sap_hana_deployment_hana_instance_number }}-clone
     - pause:
         seconds: 30
 
@@ -241,6 +237,9 @@
       ignore_errors: yes
       retries: 10
       delay: 3
+
+    - pause:
+        seconds: 30
 
     - name: pcs restore
       command: >

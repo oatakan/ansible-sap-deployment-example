@@ -64,6 +64,9 @@
       retries: 10
       delay: 3
 
+    - pause:
+        seconds: 30
+
     - name: pcs restore
       command: >
         pcs resource clear
