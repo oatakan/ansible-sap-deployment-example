@@ -21,6 +21,8 @@ sap_hana_hsr_hana_instance_number: "00"
 sap_hana_hsr_hana_db_system_password: "{{ sap_password }}"
 sap_hana_hsr_hana_primary_hostname: "{{ hostvars[ansible_play_hosts[0]].ansible_hostname }}"
 
+sap_hana_ha_pacemaker_use_e4s: false
+
 sap_hana_ha_pacemaker_hana_sid: RHE
 sap_hana_ha_pacemaker_hana_instance_number: "00"
 
