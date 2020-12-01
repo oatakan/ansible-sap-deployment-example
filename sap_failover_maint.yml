@@ -10,6 +10,7 @@
         hdbnsutil -sr_state
       become: yes
       become_user: "{{ sap_hana_deployment_hana_sid | lower }}adm"
+      become_method: su
       register: find_hana_role
 
     - name: set mode and index
@@ -67,6 +68,7 @@
         chdir: /usr/sap/{{ sap_hana_deployment_hana_sid }}/HDB{{ sap_hana_deployment_hana_instance_number }}
       become: yes
       become_user: "{{ sap_hana_deployment_hana_sid | lower }}adm"
+      become_method: su
 
 
 - name: unregister secondary (secondary)
@@ -135,6 +137,7 @@
       register: reregister_site
       become: yes
       become_user: "{{ sap_hana_deployment_hana_sid | lower }}adm"
+      become_method: su
       ignore_errors: yes
 
     - name: re-register site after upgrade online mode
@@ -150,6 +153,7 @@
       when: ('system must be shut down' in reregister_site.stdout)
       become: yes
       become_user: "{{ sap_hana_deployment_hana_sid | lower }}adm"
+      become_method: su
       ignore_errors: yes
 
     - name: reboot system
@@ -163,6 +167,7 @@
         chdir: /usr/sap/{{ sap_hana_deployment_hana_sid }}/HDB{{ sap_hana_deployment_hana_instance_number }}
       become: yes
       become_user: "{{ sap_hana_deployment_hana_sid | lower }}adm"
+      become_method: su
       ignore_errors: yes
 
 
@@ -180,6 +185,7 @@
       register: wait_sys_replication
       become: yes
       become_user: "{{ sap_hana_deployment_hana_sid | lower }}adm"
+      become_method: su
       until: wait_sys_replication.stdout == 'ACTIVE'
       retries: 300
       delay: 10
@@ -190,6 +196,7 @@
 #  hosts: "tag_app_sap_hana_ha_demo:&tag_role_s4app"
 #  become: yes
 #  become_user: "{{ sap_hana_deployment_hana_sid | lower }}adm"
+#  become_method: su
 #  tasks:
 #    - name: DB suspension
 #      file:
@@ -229,6 +236,7 @@
       delay: 30
       become: yes
       become_user: "{{ sap_hana_deployment_hana_sid | lower }}adm"
+      become_method: su
 
     - name: wait for clone set
       shell: pcs status | grep "FAILED Master {{ ansible_fqdn }}"
@@ -260,6 +268,7 @@
       failed_when: false
       become: yes
       become_user: "{{ sap_hana_deployment_hana_sid | lower }}adm"
+      become_method: su
 
 - name: upgrade (primary)
   hosts: "tag_app_sap_hana_ha_demo:&tag_role_hana:&hana_primary"
@@ -275,6 +284,7 @@
         chdir: /usr/sap/{{ sap_hana_deployment_hana_sid }}/HDB{{ sap_hana_deployment_hana_instance_number }}
       become: yes
       become_user: "{{ sap_hana_deployment_hana_sid | lower }}adm"
+      become_method: su
 
     - name: unregister site
       shell: >
@@ -284,6 +294,7 @@
         chdir: /usr/sap/{{ sap_hana_deployment_hana_sid }}/HDB{{ sap_hana_deployment_hana_instance_number }}
       become: yes
       become_user: "{{ sap_hana_deployment_hana_sid | lower }}adm"
+      become_method: su
       register: unregister_site
       when: sap_hana_site_id != ''
       failed_when:
@@ -302,6 +313,7 @@
         chdir: /usr/sap/{{ sap_hana_deployment_hana_sid }}/HDB{{ sap_hana_deployment_hana_instance_number }}
       become: yes
       become_user: "{{ sap_hana_deployment_hana_sid | lower }}adm"
+      become_method: su
       register: hdb_start
       when:
         - sap_hana_site_id != ''
@@ -335,6 +347,7 @@
       register: reregister_site
       become: yes
       become_user: "{{ sap_hana_deployment_hana_sid | lower }}adm"
+      become_method: su
       ignore_errors: yes
 
     - name: re-register site after upgrade online
@@ -350,6 +363,7 @@
       when: ('system must be shut down' in reregister_site.stdout)
       become: yes
       become_user: "{{ sap_hana_deployment_hana_sid | lower }}adm"
+      become_method: su
 
     - name: reboot system
       reboot:
@@ -362,11 +376,13 @@
         chdir: /usr/sap/{{ sap_hana_deployment_hana_sid }}/HDB{{ sap_hana_deployment_hana_instance_number }}
       become: yes
       become_user: "{{ sap_hana_deployment_hana_sid | lower }}adm"
+      become_method: su
 
 - name: wait for system replication (secondary)
   hosts: "tag_app_sap_hana_ha_demo:&tag_role_hana:&hana_secondary"
   become: yes
   become_user: "{{ sap_hana_deployment_hana_sid | lower }}adm"
+  become_method: su
 
   tasks:
     - name: wait until system replication status is active

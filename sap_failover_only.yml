@@ -10,6 +10,7 @@
         hdbnsutil -sr_state
       become: yes
       become_user: "{{ sap_hana_deployment_hana_sid | lower }}adm"
+      become_method: su
       register: find_hana_role
 
     - name: set mode and index
@@ -55,6 +56,7 @@
       delay: 30
       become: yes
       become_user: "{{ sap_hana_deployment_hana_sid | lower }}adm"
+      become_method: su
 
     - name: wait for clone set
       shell: pcs status | grep "FAILED Master {{ ansible_fqdn }}"
@@ -86,3 +88,4 @@
       failed_when: false
       become: yes
       become_user: "{{ sap_hana_deployment_hana_sid | lower }}adm"
+      become_method: su
