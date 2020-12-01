@@ -243,7 +243,7 @@
       register: wait_for_clone_set
       until: wait_for_clone_set is success
       ignore_errors: yes
-      retries: 10
+      retries: 30
       delay: 3
 
     - pause:
