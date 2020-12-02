@@ -5,6 +5,8 @@ sap_hostagent_rpm_file_name: "saphostagentrpm_48-20009394.rpm"
 sap_rhsm_pools_ids:
   - "mypoolidinfo"
 
+sap_rhsm_use_e4s: false
+
 sap_hana_ha_pacemaker_vip: "10.10.10.100"
 sap_hana_vip: "10.10.10.100"
 sap_hana_vip_cidr: "10.10.0.0/16"
