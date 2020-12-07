@@ -15,3 +15,39 @@
         state: "started"
         instance_ids: "{{ ec2_instances.instances | map(attribute='instance_id') | list }}"
       when: ec2_instances.instances | map(attribute='instance_id') | list | length > 0
+
+    - name: get ec2 instance information
+      ec2_instance_info:
+        region: "{{ ec2_region }}"
+        filters:
+          vpc-id: "{{ ec2_vpc_id }}"
+          "tag:app": sap_hana_ha_demo
+      register: ec2_instances
+
+    - name: create groups
+      add_host:
+        hostname: "{{ item.public_ip_address }}"
+        ansible_host: "{{ item.public_ip_address }}"
+        ansible_user: root
+        groups: tag_app_{{ item.tags.app | default('no_app') }},tag_role_{{ item.tags.role | default('no_role') }}
+      loop: "{{ ec2_instances.instances }}"
+      when:
+        - (item.tags.app | default('')) == 'sap_hana_ha_demo'
+
+- name: start HANA cluster
+  hosts: "tag_app_sap_hana_ha_demo:&tag_role_hana"
+
+  tasks:
+    - name: HDB start
+      shell: >
+        source /usr/sap/{{ sap_hana_deployment_hana_sid }}/home/.sapenv.sh &&
+        HDB start
+      args:
+        chdir: /usr/sap/{{ sap_hana_deployment_hana_sid }}/HDB{{ sap_hana_deployment_hana_instance_number }}
+      become: yes
+      become_user: "{{ sap_hana_deployment_hana_sid | lower }}adm"
+      become_method: su
+
+    - name: set maintenance off
+      command: pcs property set maintenance-mode=false
+      run_once: yes

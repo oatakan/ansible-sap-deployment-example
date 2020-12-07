@@ -23,3 +23,5 @@ sap_install_sapcar_file_name: "SAPCAR.EXE"
 local_repo_path: /software
 
 aws_storage_bucket_name: rhsap-demo
+
+ec2_region: us-east-1

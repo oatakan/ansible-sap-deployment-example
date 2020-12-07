@@ -4,7 +4,7 @@ nodes:
     role: s4app
     app_name: sap_hana_ha_demo
     pod_name: "{{ ec2_name_prefix }}"
-    instance_type: m5.2xlarge
+    instance_type: m5.4xlarge
     image: "{{ ec2_ami_ids['rhel8'] | default('ami-02eac2c0129f6376b') }}" #rhel8
     network_source_dest_check: no
     networks:
