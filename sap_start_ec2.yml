@@ -34,6 +34,14 @@
       when:
         - (item.tags.app | default('')) == 'sap_hana_ha_demo'
 
+    - name: waiting for servers to come online
+      wait_for:
+        host: "{{ item.public_ip_address }}"
+        port: "{{ item.ansible_port | default(ansible_port) | default('22') }}"
+      loop: "{{ ec2_instances.instances }}"
+      when: ec2_instances.instances | length > 0
+      ignore_errors: yes
+
 - name: start HANA cluster
   hosts: "tag_app_sap_hana_ha_demo:&tag_role_hana"
 

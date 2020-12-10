@@ -7,9 +7,13 @@ sap_rhsm_pools_ids:
 
 sap_rhsm_use_e4s: false
 
-sap_hana_ha_pacemaker_vip: "10.10.10.100"
-sap_hana_vip: "10.10.10.100"
-sap_hana_vip_cidr: "10.10.0.0/16"
+#sap_hana_ha_pacemaker_vip: "10.10.10.100"
+#sap_hana_vip: "10.10.10.100"
+#sap_hana_vip_cidr: "10.10.0.0/16"
+
+sap_hana_ha_pacemaker_vip: "172.31.50.100"
+sap_hana_vip: "172.31.50.100"
+sap_hana_vip_cidr: "172.31.48.0/20"
 
 sap_db_host: "hdb1vip"
 

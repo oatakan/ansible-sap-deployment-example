@@ -5,4 +5,5 @@ ec2_image_names:
   rhel8: "RHEL-8.1.0_HVM*x86_64*Access*"
   centos7: "CentOS Linux 7 x86_64 HVM EBS ENA 1901_01*"
   centos8: "CentOS 8.2.2004 x86_64"
+  win2019_full: "Windows_Server-2019-English-Full-Base*"
 ec2_region: us-east-1
