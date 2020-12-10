@@ -1,0 +1,7 @@
+---
+
+- name: preconfigure all windows nodes
+  hosts: "tag_app_sap_hana_ha_demo:&tag_role_sapgui"
+
+  roles:
+    - common-windows

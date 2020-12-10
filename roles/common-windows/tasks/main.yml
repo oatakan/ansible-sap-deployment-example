@@ -1,0 +1,10 @@
+---
+
+- name: build hosts file
+  win_lineinfile:
+    path: c:\windows\system32\drivers\etc\hosts
+    regexp: '.*{{ item }}$'
+    line: "{{ hostvars[item].ansible_default_ipv4.address }} {{ hostvars[item].ec2_tag_Name.split('-')[-1] }}.{{ domain_name }} {{ hostvars[item].ec2_tag_Name.split('-')[-1] }}"
+    state: present
+  when: hostvars[item].ansible_default_ipv4.address is defined
+  loop: "{{ groups['tag_app_sap_hana_ha_demo'] }}"

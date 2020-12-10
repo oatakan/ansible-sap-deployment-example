@@ -1,6 +1,6 @@
 ---
 
-- name: preconfigure all nodes
+- name: preconfigure all linux nodes
   hosts: "tag_app_sap_hana_ha_demo:!tag_role_sapgui"
 
   roles:
