@@ -33,6 +33,24 @@
         - ('s4app' in item.instances[0].tags.role)
       changed_when: no
 
+    - name: add hosts to sapgui group
+      add_host:
+        name: "{{ item.instances[0].public_ip_address }}"
+        ansible_host: "{{ item.instances[0].public_ip_address }}"
+        ansible_user: Administrator
+        ansible_port: 5986
+        ansible_password: "{{ service_user_password }}"
+        ansible_connection: "{{ windows_ansible_connection | default('winrm') }}"
+        ansible_winrm_transport: credssp
+        ansible_winrm_server_cert_validation: ignore
+        groups: tag_role_sapgui,tag_app_sap_hana_ha_demo
+      loop: "{{ instances.results }}"
+      when:
+        - service_user_password is defined
+        - ('sap_hana_ha_demo' in item.instances[0].tags.app)
+        - ('sapgui' in item.instances[0].tags.role)
+      changed_when: no
+
     - name: wait for connection
       wait_for_connection:
       delegate_to: "{{ item.instances[0].public_ip_address }}"
@@ -48,5 +66,7 @@
       become: yes
       delegate_to: "{{ item.instances[0].public_ip_address }}"
       loop: "{{ instances.results }}"
-      when: ('sap_hana_ha_demo' in item.instances[0].tags.app)
+      when:
+        - ('sap_hana_ha_demo' in item.instances[0].tags.app)
+        - ('sapgui' not in item.instances[0].tags.role)
       changed_when: no

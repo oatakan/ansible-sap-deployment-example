@@ -16,6 +16,11 @@ reg delete "HKLM\SOFTWARE\Policies\Microsoft\Windows\WinRM\Service" /v DisableRu
 # Disable Windows Defender Monitoring
 Set-MpPreference -DisableRealtimeMonitoring $true
 
+{% if service_user_password is defined %}
+# Change Administrator Password
+net user Administrator "{{ service_user_password }}"
+{% endif %}
+
 # Enable WinRM
 Invoke-WebRequest -Uri https://raw.githubusercontent.com/ansible/ansible/devel/examples/scripts/ConfigureRemotingForAnsible.ps1 -OutFile C:\ConfigureRemotingForAnsible.ps1
 C:\ConfigureRemotingForAnsible.ps1 -ForceNewSSLCert -EnableCredSSP
