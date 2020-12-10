@@ -1,7 +1,7 @@
 ---
 
 - name: add service user
-  hosts: "tag_app_sap_hana_ha_demo"
+  hosts: "tag_app_sap_hana_ha_demo:&!tag_role_sapgui"
 
   tasks:
     - name: add user
