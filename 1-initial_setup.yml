@@ -1,7 +1,7 @@
 ---
 
 - name: preconfigure all nodes
-  hosts: "tag_app_sap_hana_ha_demo:&!tag_role_sapgui"
+  hosts: "tag_app_sap_hana_ha_demo:!tag_role_sapgui"
 
   roles:
     - storage
