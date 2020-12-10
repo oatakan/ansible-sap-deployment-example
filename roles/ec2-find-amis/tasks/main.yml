@@ -34,7 +34,6 @@
 
 - name: find ami id for windows 2019
   ec2_ami_info:
-    owners: 125523088429
     filters:
       name: "{{ ec2_image_names['win2019_full'] }}"
     region: "{{ ec2_region }}"
