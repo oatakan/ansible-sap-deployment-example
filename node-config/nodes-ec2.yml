@@ -68,7 +68,7 @@ nodes:
     pod_name: "{{ ec2_name_prefix }}"
     instance_type: t3.medium
     image: "{{ win2019_ami_id | default(ec2_ami_ids['win2019_full']) | default('ami-02eac2c0129f6376b') }}" #windows 2019
-    user_data: "{{ lookup('template', 'win_ec2_user_data.j2', template_vars=dict(vm_name='windc')) }}"
+    user_data: "{{ lookup('template', 'node-config/win_ec2_user_data.j2', template_vars=dict(vm_name='windc')) }}"
     ansible_port: 5986
     network_source_dest_check: no
     networks:
