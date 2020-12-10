@@ -32,6 +32,14 @@
     region: "{{ ec2_region }}"
   register: centos8_ami_find
 
+- name: find ami id for windows 2019
+  ec2_ami_info:
+    owners: 125523088429
+    filters:
+      name: "{{ ec2_image_names['win2019_full'] }}"
+    region: "{{ ec2_region }}"
+  register: win2019_full_ami_find
+
 - name: set ami ids
   set_fact:
     ec2_ami_ids:
@@ -39,6 +47,7 @@
       rhel8: "{{ rhel8_ami_find.images[-1].image_id | default('') }}"
       centos7: "{{ centos7_ami_find.images[-1].image_id | default('') }}"
       centos8: "{{ centos8_ami_find.images[-1].image_id | default('') }}"
+      win2019_full: "{{ win2019_full_ami_find.images[-1].image_id | default('') }}"
 
 - debug:
     var: ec2_ami_ids
