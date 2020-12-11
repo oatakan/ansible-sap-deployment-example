@@ -1,5 +1,6 @@
 - hosts: localhost
   become: no
+  gather_facts: no
   tasks:
     - name: get ec2 instance information
       ec2_instance_info:

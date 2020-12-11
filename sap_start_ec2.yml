@@ -29,17 +29,17 @@
         hostname: "{{ item.public_ip_address }}"
         ansible_host: "{{ item.public_ip_address }}"
         ansible_user: root
+        ansible_port: "{{ 5986 if ((item.tags.role | default('')) == 'sapgui') else 22 }}"
         groups: tag_app_{{ item.tags.app | default('no_app') }},tag_role_{{ item.tags.role | default('no_role') }}
       loop: "{{ ec2_instances.instances }}"
-      when:
-        - (item.tags.app | default('')) == 'sap_hana_ha_demo'
+      when: (item.tags.app | default('')) == 'sap_hana_ha_demo'
 
     - name: waiting for servers to come online
       wait_for:
-        host: "{{ item.public_ip_address }}"
-        port: "{{ item.ansible_port | default(ansible_port) | default('22') }}"
-      loop: "{{ ec2_instances.instances }}"
-      when: ec2_instances.instances | length > 0
+        host: "{{ hostvars[item].ansible_host }}"
+        port: "{{ hostvars[item].ansible_port | default('22') }}"
+      loop: "{{ groups['tag_app_sap_hana_ha_demo'] }}"
+      when: groups['tag_app_sap_hana_ha_demo'] | length > 0
       ignore_errors: yes
 
 - name: start HANA cluster

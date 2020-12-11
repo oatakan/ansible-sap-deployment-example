@@ -8,3 +8,8 @@
     state: present
   when: hostvars[item].ansible_default_ipv4.address is defined
   loop: "{{ groups['tag_app_sap_hana_ha_demo'] }}"
+
+- name: ensure cyberduck is installed
+  win_chocolatey:
+    name: cyberduck
+    state: present
