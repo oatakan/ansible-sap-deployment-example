@@ -3,7 +3,7 @@
 - name: RHN unregister
   hosts: "tag_app_sap_hana_ha_demo:!tag_role_sapgui"
 
- tasks:
+  tasks:
     - name: unregister redhat-insights
       command: redhat-access-insights --unregister
       failed_when: false
