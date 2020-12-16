@@ -2,6 +2,10 @@
 
 - name: RHN register
   hosts: "tag_app_sap_hana_ha_demo:!tag_role_sapgui"
+  vars:
+    activation_keys:
+      s4app: SAP S4 Server
+      hana: SAP HANA Server
 
   pre_tasks:
 
@@ -57,3 +61,14 @@
             name: oatakan.rhn
           vars:
             role_action: unregister
+      when: satellite_host is undefined
+
+    - name: subscribe to satellite using activation key
+      redhat_subscription:
+        state: present
+        server_hostname: "{{ satellite_host }}"
+        server_insecure: yes
+        activationkey: "{{ activation_keys[tags.role] | default('SAP HANA Server') }}"
+        org_id: "{{ satellite_org_id | default('Red Hat') }}"
+        auto_attach: true
+      when: satellite_host is defined

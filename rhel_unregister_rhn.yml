@@ -3,12 +3,13 @@
 - name: RHN unregister
   hosts: "tag_app_sap_hana_ha_demo:!tag_role_sapgui"
 
-  pre_tasks:
+ tasks:
     - name: unregister redhat-insights
       command: redhat-access-insights --unregister
       failed_when: false
       ignore_unreachable: yes
 
-  roles:
-    - role: oatakan.rhn
-      role_action: unregister
+    - include_role:
+        name: oatakan.rhn
+      vars:
+        role_action: unregister
