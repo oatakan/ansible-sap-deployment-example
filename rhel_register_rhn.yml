@@ -69,6 +69,6 @@
         server_hostname: "{{ satellite_host }}"
         server_insecure: yes
         activationkey: "{{ activation_keys[tags.role] | default('SAP HANA Server') }}"
-        org_id: "{{ satellite_org_id | default('Red Hat') }}"
+        org_id: "{{ satellite_org_id | default('Red_Hat') }}"
         auto_attach: true
       when: satellite_host is defined
