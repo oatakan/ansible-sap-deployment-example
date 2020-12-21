@@ -77,4 +77,29 @@
             activationkey: "{{ activation_keys[tags.role] | default('SAP HANA Server') }}"
             org_id: "{{ satellite_org_id | default('Red_Hat') }}"
             auto_attach: true
+
+        - name: remove RHUI redhat-rhui-client-config repos
+          yum_repository:
+            name: "{{ item }}"
+            file: redhat-rhui-client-config
+            state: absent
+          loop:
+            - rhui-client-config-server-8
+
+        - name: remove RHUI redhat-rhui repos
+          yum_repository:
+            name: "{{ item }}"
+            file: redhat-rhui
+            state: absent
+          loop:
+            - rhui-rhel-8-appstream-rhui-debug-rpms
+            - rhui-rhel-8-appstream-rhui-rpms
+            - rhui-rhel-8-appstream-rhui-source-rpms
+            - rhui-rhel-8-baseos-rhui-debug-rpms
+            - rhui-rhel-8-baseos-rhui-rpms
+            - rhui-rhel-8-baseos-rhui-source-rpms
+            - rhui-codeready-builder-for-rhel-8-rhui-debug-rpms
+            - rhui-codeready-builder-for-rhel-8-rhui-rpms
+            - rhui-codeready-builder-for-rhel-8-rhui-source-rpms
+
       when: satellite_host is defined
