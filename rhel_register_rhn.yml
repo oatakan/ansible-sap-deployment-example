@@ -64,6 +64,10 @@
       when: satellite_host is undefined
 
     - block:
+        - name: set hostname
+          hostname:
+            name: "{{ ec2_tag_Name.split('-')[-1] }}"
+
         - name: install satellite ca cert
           yum:
             name: http://{{ satellite_host }}/pub/katello-ca-consumer-latest.noarch.rpm
