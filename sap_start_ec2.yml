@@ -43,7 +43,7 @@
       ignore_errors: yes
 
 - name: start HANA cluster
-  hosts: "tag_app_sap_hana_ha_demo:&tag_role_hana"
+  hosts: "tag_app_sap_hana_ha_demo"
 
   tasks:
     - name: HDB start

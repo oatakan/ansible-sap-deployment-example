@@ -68,3 +68,6 @@ storage_pools:
         size: "30 GiB"
         mount_point: "/install"
         state: present
+      - name: swap
+        size: "128 GiB"
+        state: present

@@ -238,16 +238,16 @@
       become_user: "{{ sap_hana_deployment_hana_sid | lower }}adm"
       become_method: su
 
-    - name: wait for clone set
-      shell: pcs status | grep "FAILED Master {{ ansible_fqdn }}"
-      register: wait_for_clone_set
-      until: wait_for_clone_set is success
-      ignore_errors: yes
-      retries: 30
-      delay: 3
+#    - name: wait for clone set
+#      shell: pcs status | grep "FAILED Master {{ ansible_fqdn }}"
+#      register: wait_for_clone_set
+#      until: wait_for_clone_set is success
+#      ignore_errors: yes
+#      retries: 30
+#      delay: 3
 
     - pause:
-        seconds: 30
+        seconds: 60
 
     - name: pcs restore
       command: >
