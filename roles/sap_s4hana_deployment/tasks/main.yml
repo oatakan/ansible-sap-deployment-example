@@ -64,3 +64,4 @@
   failed_when:
     - (check_install.rc | default(0)) > 0
     - "'An empty directory is required for a new SAP system installation' not in (check_install.stdout | default(''))"
+  ignore_errors: yes
