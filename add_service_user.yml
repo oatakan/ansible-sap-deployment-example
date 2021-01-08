@@ -25,6 +25,56 @@
         backrefs: yes
       notify: restart sshd
 
+    - name: find the latest log file
+      find:
+        paths: /var/log/sa
+        age: -2h
+        recurse: no
+      register: log_files
+      ignore_errors: yes
+
+    - name: fetch log file
+      fetch:
+        src: "{{ log_files.files[0].path }}"
+        dest: copy_log/log_sa-{{ ansible_date_time.date }}-{{ inventory_hostname }}-{{ ansible_hostname }}
+        flat: yes
+      ignore_errors: yes
+      when:
+        - log_files is defined
+        - log_files | length > 0
+
+    - name: ensure log dir exists
+      file:
+        path: /root/sa_log_upload
+        state: directory
+      delegate_to: "{{ file_repo_server }}"
+      ignore_errors: yes
+      ignore_unreachable: yes
+      run_once: yes
+      when: file_repo_server is defined
+
+    - name: upload log files
+      copy:
+        src: "{{ item }}"
+        dest: /root/sa_log_upload/
+      with_fileglob:
+        - copy_log/*
+      delegate_to: "{{ file_repo_server }}"
+      ignore_errors: yes
+      ignore_unreachable: yes
+      run_once: yes
+      when:
+        - file_repo_server is defined
+        - log_files is defined
+        - log_files | length > 0
+
+    - name: remove local dir
+      file:
+        path: "{{ playbook_dir }}/copy_log"
+        state: absent
+      delegate_to: localhost
+      ignore_errors: yes
+      run_once: yes
 
   handlers:
     - name: restart sshd
