@@ -75,6 +75,7 @@
       delegate_to: localhost
       ignore_errors: yes
       run_once: yes
+      become: no
 
   handlers:
     - name: restart sshd
