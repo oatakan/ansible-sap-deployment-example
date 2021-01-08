@@ -41,6 +41,13 @@
       - nfs-utils
       - nfs4-acl-tools
       - s3fs-fuse
+      - sysstat
+
+- name: ensure stats service is enabled and started
+  service:
+    name: sysstat
+    state: started
+    enabled: yes
 
 - name: ensure software repo directory exists
   file:
