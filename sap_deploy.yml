@@ -116,3 +116,11 @@
           register: db_overwrite_cmd
           failed_when: false
       when: sap_hana_hsr_role == 'primary'
+
+- name: run insights client
+  hosts: "tag_app_sap_hana_ha_demo:!tag_role_sapgui"
+
+  tasks:
+    - name: run insights client
+      command: insights-client
+      failed_when: false
