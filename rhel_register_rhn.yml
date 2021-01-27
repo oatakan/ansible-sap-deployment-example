@@ -67,6 +67,7 @@
         - name: install satellite ca cert
           yum:
             name: http://{{ satellite_host }}/pub/katello-ca-consumer-latest.noarch.rpm
+            disable_gpg_check: yes
             state: present
 
         - name: subscribe to satellite using activation key
