@@ -2,7 +2,8 @@ plugin: aws_ec2
 regions:
   - us-east-1
 filters:
-  tag:app: sap_hana_ha_demo
+  tag:app: oa-rmt4_sap
+  tag:role: s4app
 hostnames:
   - network-interface.association.public-ip
 keyed_groups:
@@ -10,3 +11,4 @@ keyed_groups:
     key: tags
 compose:
   ansible_user: "'root'"
+  ansible_ssh_private_key_file: "'/Users/oatakan/PycharmProjects/sap-hana-workshop/provisioner/oa-rmt3/oa-rmt3-private.pem'"
