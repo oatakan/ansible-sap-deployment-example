@@ -1,29 +1,13 @@
 ---
 
-- name: set hostname
-  hostname:
-    name: "{{ ec2_tag_Name.split('-')[-1] }}"
-  when: ec2_tag_Name is defined
-
 - block:
-    - name: build hosts file
-      lineinfile:
-        dest: /etc/hosts
-        regexp: ".*{{ hostvars[item].ec2_tag_Name.split('-')[-1]  }}$"
-        line: "{{ hostvars[item].ansible_default_ipv4.address }} {{ hostvars[item].ec2_tag_Name.split('-')[-1] }}.{{ domain_name }} {{ hostvars[item].ec2_tag_Name.split('-')[-1] }}"
-        state: present
-      when: ec2_tag_Name is defined
-      loop: "{{ play_hosts }}"
-
     - name: build hosts file
       lineinfile:
         dest: /etc/hosts
         regexp: '.*{{ hostvars[item].name }}$'
         line: "{{ hostvars[item].ansible_default_ipv4.address }} {{ hostvars[item].name }}.{{ domain_name }} {{ hostvars[item].name }}"
         state: present
-      when:
-        - ec2_tag_Name is undefined
-        - hostvars[item].name is defined
+      when: hostvars[item].name is defined
       loop: "{{ play_hosts }}"
 
     - name: build hosts file
@@ -32,9 +16,7 @@
         regexp: '.*{{ item }}$'
         line: "{{ hostvars[item].ansible_default_ipv4.address }} {{ item }}.{{ domain_name }} {{ item }}"
         state: present
-      when:
-        - ec2_tag_Name is undefined
-        - hostvars[item].name is undefined
+      when: hostvars[item].name is undefined
       loop: "{{ play_hosts }}"
 
   when: hostvars[item].ansible_default_ipv4.address is defined
