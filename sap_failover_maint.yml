@@ -397,3 +397,9 @@
       retries: 300
       delay: 10
       failed_when: false
+
+- name: rerun the insights client
+  hosts: "tag_app_sap_hana_ha_demo:&tag_role_hana"
+  tasks:
+    - name: run the insights-client and upload to c.rh.c
+      shell: insights-client 
