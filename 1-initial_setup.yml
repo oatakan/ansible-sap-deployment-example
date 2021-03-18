@@ -6,3 +6,7 @@
   roles:
     - storage
     - common
+    - redhatinsights.insights.insights_client
+  tasks:
+    - name: run the insights-client and upload to c.rh.c
+      shell: insights-client
