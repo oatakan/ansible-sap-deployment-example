@@ -20,3 +20,9 @@
 
   roles:
     - sap-netweaver-preconfigure
+
+- name: run the insights client
+  hosts: "tag_app_sap_hana_ha_demo:!tag_role_sapgui"
+  tasks:
+    - name: run the insights-client and upload to c.rh.c
+      shell: insights-client
