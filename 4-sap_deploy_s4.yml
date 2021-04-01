@@ -15,6 +15,10 @@
         var: hostvars['hana_primary']['ip_address']
       when: sap_hana_hsr_role == 'primary'
 
+  post_tasks:
+    - name: run insights client and send data to c.rh.c
+      command: insights-client
+
 - name: preconfigure netweaver and install s4 app
   hosts: "tag_app_sap_hana_ha_demo:&tag_role_s4app"
 #  become_method: su
@@ -69,10 +73,6 @@
           failed_when: false
       when: sap_hana_hsr_role == 'primary'
 
-- name: run insights client
-  hosts: "tag_app_sap_hana_ha_demo:!tag_role_sapgui"
-
-  tasks:
-    - name: run insights client
+    - name: run insights client and send data to c.rh.c
       command: insights-client
-      failed_when: false
+
