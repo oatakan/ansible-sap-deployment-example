@@ -1,0 +1,5 @@
+---
+
+collections:
+   - name: redhatinsights.insights
+     source: https://galaxy.ansible.com

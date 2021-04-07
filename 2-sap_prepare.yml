@@ -8,6 +8,11 @@
     - redhat_sap.sap_rhsm
     - redhat_sap.sap_hostagent
 
+  post_tasks:
+    - name: run the insights-client and upload to c.rh.c
+      shell: insights-client
+
+
 - name: preconfigure hana and deploy hana
   hosts: "tag_app_sap_hana_ha_demo:&tag_role_hana"
   become_method: su
@@ -15,8 +20,17 @@
   roles:
     - sap-hana-preconfigure
 
+  post_tasks:
+    - name: run the insights-client and upload to c.rh.c
+      shell: insights-client
+
 - name: preconfigure netweaver and install s4 app
   hosts: "tag_app_sap_hana_ha_demo:&tag_role_s4app"
 
   roles:
     - sap-netweaver-preconfigure
+
+  post_tasks:
+    - name: run the insights-client and upload to c.rh.c
+      shell: insights-client
+
