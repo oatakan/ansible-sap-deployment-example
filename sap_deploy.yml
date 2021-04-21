@@ -3,6 +3,13 @@
 - name: preconfigure all nodes
   hosts: "tag_app_sap_hana_ha_demo:!tag_role_sapgui"
 
+  pre_tasks:
+    # existence of tuned package causes yum conflict in the next step, remove for idempotency
+    - name: ensure tuned package is not installed
+      package:
+        name: tuned
+        state: absent
+
   roles:
     - storage
     - common
