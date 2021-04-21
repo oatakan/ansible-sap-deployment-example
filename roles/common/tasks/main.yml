@@ -97,7 +97,14 @@
         state: present
   when: ('4.18.0-147.el8.x86_64' in ansible_kernel)
 
-- include_tasks: swap.yml
+- block:
+    - name: check if swap exists
+      stat:
+        path: /dev/mapper/{{ storage_pools[0].name }}-swap
+      register: swap_check
+
+    - include_tasks: swap.yml
+      when: not swap_check.stat.exists
   when:
     - storage_pools is defined
     - storage_pools | length > 0
