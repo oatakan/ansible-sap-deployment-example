@@ -49,8 +49,15 @@
 #    # this a temporary measure before implementing real vip
 #    sap_hana_ha_pacemaker_vip: "{{ hostvars['hana_primary']['ip_address'] }}"
 
-  roles:
-    - redhat_sap.sap_hana_ha_pacemaker
+  tasks:
+    - name: check pcs cluster
+      shell: pcs status | grep hana_cluster
+      register: check_pcs_cluster
+      failed_when: false
+
+    - include_role:
+        name: redhat_sap.sap_hana_ha_pacemaker
+      when: (check_pcs_cluster.rc != 0) | default(True)
 
   post_tasks:
     - block:
