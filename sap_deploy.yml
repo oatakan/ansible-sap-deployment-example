@@ -69,10 +69,22 @@
     # this a temporary measure before implementing real vip
     sap_hana_vip: "{{ hostvars['hana_primary']['ip_address'] }}"
 
-  roles:
-    - sap-netweaver-preconfigure
-    - s4-hosts
-    - sap_s4hana_deployment
+  tasks:
+    - name: check existing s4hana installation
+      stat:
+        path: "/usr/sap/{{ sap_s4hana_deployment_sid }}/D{{ sap_s4hana_deployment_hana_instance_nr }}/exe/SAPCAR"
+        get_checksum: no
+      register: s4hana_installation_check
+
+    - include_role:
+        name: "{{ role_name }}"
+      when: (not s4hana_installation_check.stat.exists) | default(True)
+      loop_control:
+        loop_var: role_name
+      loop:
+        - sap-netweaver-preconfigure
+        - s4-hosts
+        - sap_s4hana_deployment
 
 - name: hana pacemaker
   hosts: "tag_app_sap_hana_ha_demo:&tag_role_hana"
