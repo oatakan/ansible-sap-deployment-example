@@ -87,6 +87,12 @@
 
 # this seems to be only needed on 8.1 AMI on AWS
 - block:
+    # existence of tuned package causes yum conflict in the next step, remove for idempotency
+    - name: ensure tuned package is not installed
+      package:
+        name: tuned
+        state: absent
+
     - name: install @server group and skip broken
       command: yum install @server --skip-broken -y
       failed_when: false
