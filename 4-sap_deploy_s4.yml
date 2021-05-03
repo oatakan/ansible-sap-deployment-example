@@ -42,6 +42,14 @@
         - s4-hosts
         - sap_s4hana_deployment
 
+    - name: update hdbuserstore default entry on s4app
+      shell: >
+        source /home/{{ sap_s4hana_deployment_sid | lower }}adm/.sapenv.sh &&
+        hdbuserstore Set default "{{ sap_db_host }}:3{{ sap_s4hana_deployment_hana_instance_nr }}13"@{{ sap_s4hana_deployment_sid }} {{ sap_s4hana_deployment_db_schema_abap }} {{ sap_s4hana_deployment_db_schema_abap_password }}
+      become: yes
+      become_user: "{{ sap_s4hana_deployment_sid | lower }}adm"
+      become_method: su
+
 - name: hana pacemaker
   hosts: "tag_app_sap_hana_ha_demo:&tag_role_hana"
   become_method: su

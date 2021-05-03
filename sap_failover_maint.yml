@@ -211,7 +211,14 @@
 
 - name: fail over (secondary)
   hosts: "tag_app_sap_hana_ha_demo:&tag_role_hana:&hana_secondary"
+  pre_tasks:
+    - name: set new primary hana server ip
+      add_host:
+        name: hana_primary
+        ip_address: "{{ ansible_ip_addresses[0] | default(ec2_private_ip_address) | default(private_ip) | default(ansible_host) | default(ansible_ssh_host) }}"
 
+    - debug:
+        var: hostvars['hana_primary']['ip_address']
   tasks:
     - name: set maintenance off
       command: pcs property set maintenance-mode=false
@@ -269,6 +276,14 @@
       become: yes
       become_user: "{{ sap_hana_deployment_hana_sid | lower }}adm"
       become_method: su
+
+- name: move the vip on s4app
+  hosts: "tag_app_sap_hana_ha_demo:&tag_role_s4app"
+  vars:
+    # this a temporary measure before implementing real vip
+    sap_hana_vip: "{{ hostvars['hana_primary']['ip_address'] }}"
+  roles:
+    - s4-hosts
 
 - name: upgrade (primary)
   hosts: "tag_app_sap_hana_ha_demo:&tag_role_hana:&hana_primary"
