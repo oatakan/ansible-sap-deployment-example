@@ -18,8 +18,8 @@ roles:
     version: v1.0
   - src: redhat_sap.sap_hostagent
     version: v1.2.0
-  - name: redhat_sap.sap_rhsm
-    src: https://github.com/redhat-sap/sap-rhsm.git
+#  - name: redhat_sap.sap_rhsm
+#    src: https://github.com/redhat-sap/sap-rhsm.git
 #  - src: redhat_sap.sap_s4hana_deployment
 #    version: v1.1.0
   - src: https://github.com/linux-system-roles/storage.git

@@ -12,7 +12,7 @@
 
   roles:
     - sap-preconfigure
-    - redhat_sap.sap_rhsm
+#    - redhat_sap.sap_rhsm # replace this with rhn register step/role
     - redhat_sap.sap_hostagent
 
   post_tasks:
